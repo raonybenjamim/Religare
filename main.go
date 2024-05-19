@@ -8,11 +8,11 @@ import (
 
 func main() {
 
-	ch := make(chan models.Binary, models.InterpreterChannelSize)
+	binaryChannel := make(chan models.Binary, models.InterpreterChannelSize)
 
-	go signalInterpreter.AddBinaryData(0.5, ch)
+	go signalInterpreter.AddBinaryData(0.5, binaryChannel)
 
-	for binary := range ch {
+	for binary := range binaryChannel {
 		fmt.Printf("Binary signal strength: %s\n", binary)
 	}
 
