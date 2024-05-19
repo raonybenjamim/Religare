@@ -1,5 +1,5 @@
 package models
 
 const (
-	InterpreterChannelSize = 100
+	ConverterChannelSize = 100
 )

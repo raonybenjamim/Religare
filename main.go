@@ -2,15 +2,15 @@ package main
 
 import (
 	"fmt"
-	signalInterpreter "lazarus/interpreter"
+	signalConverter "lazarus/converter"
 	"lazarus/models"
 )
 
 func main() {
 
-	binaryChannel := make(chan models.Binary, models.InterpreterChannelSize)
+	binaryChannel := make(chan models.Binary, models.ConverterChannelSize)
 
-	go signalInterpreter.AddBinaryData(0.5, binaryChannel)
+	go signalConverter.AddBinaryData(0.5, binaryChannel)
 
 	for binary := range binaryChannel {
 		fmt.Printf("Binary signal strength: %s\n", binary)
