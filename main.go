@@ -1,16 +1,21 @@
 package main
 
 import (
-	signalConverter "lazarus/converter"
+	"lazarus/converter"
 	"lazarus/interpreter"
-	"lazarus/models"
 )
 
 func main() {
 
-	binaryChannel := make(chan models.Binary, models.ConverterChannelSize)
+	// THIS WAY WE READ SIGNALS FROM THE WIFI
+	// binaryChannel := make(chan models.Binary, models.ConverterChannelSize)
 
-	go signalConverter.AddBinaryData(0.75, binaryChannel)
+	// go signalConverter.AddBinaryData(0.75, binaryChannel)
 
-	interpreter.ReadChannel(binaryChannel)
+	// READING RANDOM DATA
+	randomSignalGenerator := converter.NewRandomSignalGenerator(200)
+
+	go randomSignalGenerator.GenerateSignal()
+
+	interpreter.ReadChannel(randomSignalGenerator.Channel)
 }

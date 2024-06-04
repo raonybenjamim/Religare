@@ -1,4 +1,4 @@
-package signalConverter
+package converter
 
 import (
 	"fmt"
