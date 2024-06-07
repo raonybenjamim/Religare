@@ -1,7 +1,8 @@
 package models
 
 const (
-	ValidStart      string = "01010"
+	ValidStart      string = "1111101010"
+	ValidStartBits  int    = 10
 	MessageTypeBits int    = 4
 	MessageSizeBits int    = 10
 	ChecksumBits    int    = 128
@@ -23,4 +24,10 @@ var MessageType = messageType{
 	ImageFile: "0100",
 	Audio:     "0101",
 	AudioFile: "0110",
+}
+
+type MessageHeaders struct {
+	MessageType      string
+	MessageSizeBytes int
+	Checksum         string
 }

@@ -17,5 +17,9 @@ func main() {
 
 	go randomSignalGenerator.GenerateSignal()
 
-	interpreter.ReadChannel(randomSignalGenerator.Channel)
+	channelReader := interpreter.ChannelReader{
+		Channel: randomSignalGenerator.Channel,
+	}
+
+	channelReader.ReadChannel()
 }
