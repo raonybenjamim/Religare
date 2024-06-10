@@ -25,8 +25,6 @@ func (reader *ChannelReader) ReadChannel() {
 			continue
 		}
 
-		fmt.Printf("Headers found! %v", messaageHeaders)
-
 		// Read the "size" bits from the message and convert it to
 		// a text, image or audio
 
