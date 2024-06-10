@@ -32,17 +32,25 @@ func (reader *ChannelReader) ReadChannel() {
 
 		switch messaageHeaders.MessageType {
 		case models.MessageType.Text:
-			textContent, err := reader.binaryToText(reader.getDataFromChannel(messaageHeaders.MessageSizeBytes * models.ByteSize))
+			textContent, err := reader.readTextMessageFromChannel(messaageHeaders)
 
-			if err != nil {
-				println("Error while reading binary data form channel: " + err.Error())
+			if err == nil {
+				println("Got message: " + textContent)
 			}
 
-			if !reader.isValidStringMessage(messaageHeaders.Checksum, textContent) {
-				break
+		case models.MessageType.TextFile:
+			textContent, err := reader.readTextMessageFromChannel(messaageHeaders)
+
+			if err == nil {
+				filename, err := helpers.WriteStringToFile(textContent)
+
+				if err != nil {
+					break
+				}
+
+				println("File Received: ", filename)
 			}
 
-			println("Got message: " + textContent)
 		}
 	}
 }
@@ -128,4 +136,18 @@ func (reader *ChannelReader) isValidStringMessage(expectedBinary string, message
 
 	return expectedHash == messageHash
 
+}
+
+func (reader *ChannelReader) readTextMessageFromChannel(headers models.MessageHeaders) (string, error) {
+	textContent, err := reader.binaryToText(reader.getDataFromChannel(headers.MessageSizeBytes * models.ByteSize))
+
+	if err != nil {
+		return "", fmt.Errorf("Error while reading binary data form channel: " + err.Error())
+	}
+
+	if !reader.isValidStringMessage(headers.Checksum, textContent) {
+		return "", fmt.Errorf("The received message was not valid!")
+	}
+
+	return textContent, nil
 }
