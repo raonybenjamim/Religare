@@ -146,7 +146,7 @@ func (reader *ChannelReader) readTextMessageFromChannel(headers models.MessageHe
 	}
 
 	if !reader.isValidStringMessage(headers.Checksum, textContent) {
-		return "", fmt.Errorf("The received message was not valid!")
+		return "", fmt.Errorf("the received message was not valid")
 	}
 
 	return textContent, nil
