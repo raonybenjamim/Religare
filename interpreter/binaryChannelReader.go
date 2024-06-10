@@ -13,7 +13,7 @@ type ChannelReader struct {
 	Channel <-chan models.Binary
 }
 
-func (reader *ChannelReader) ReadChannel() bool {
+func (reader *ChannelReader) ReadChannel() {
 	for {
 		if !(reader.getDataFromChannel(models.ValidStartBits) == models.ValidStart) {
 			continue
@@ -36,6 +36,10 @@ func (reader *ChannelReader) ReadChannel() bool {
 
 			if err != nil {
 				println("Error while reading binary data form channel: " + err.Error())
+			}
+
+			if !reader.isValidStringMessage(messaageHeaders.Checksum, textContent) {
+				break
 			}
 
 			println("Got message: " + textContent)
@@ -111,4 +115,17 @@ func (reader *ChannelReader) binaryToText(binaryString string) (string, error) {
 	}
 
 	return text, nil
+}
+
+func (reader *ChannelReader) isValidStringMessage(expectedBinary string, messageData string) bool {
+	expectedHash, err := reader.binaryToText(expectedBinary)
+
+	if err != nil {
+		return false
+	}
+
+	messageHash := helpers.GetMd5HashFromString(messageData)
+
+	return expectedHash == messageHash
+
 }
