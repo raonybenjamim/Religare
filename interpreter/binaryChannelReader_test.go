@@ -75,6 +75,33 @@ func TestBinaryToText(t *testing.T) {
 	}
 }
 
+func TestValidMessageIsCorrectlyChecked(t *testing.T) {
+	tests := []struct {
+		expectedBinaryChecksum string
+		textMessage            string
+		expectedError          bool
+	}{
+		{
+			"0011011101100010001100100110000100110011001101000110001101100001011000100011001101100100011000110011001000110011011000110011100000110000011000100011100101100110001101000110010001100010011001100011100100110011011000110110001100110000011000100110010001100101",
+			"Correct Testing message",
+			true},
+		{
+			"0011011101100010001100100110000100110011001101100110001101100001011000100011001101100100011000110011001000110011011000110011100000110000011000100011100101100110001101000110010001100010011001100011100100110011011000110110001100110000011000100110010001100101",
+			"This message will fail",
+			false},
+	}
+
+	channelReader := ChannelReader{
+		Channel: make(chan models.Binary),
+	}
+
+	for _, test := range tests {
+		if channelReader.isValidStringMessage(test.expectedBinaryChecksum, test.textMessage) != test.expectedError {
+			t.Errorf("Error while checking vality for message: %v", test.textMessage)
+		}
+	}
+}
+
 func loadChannel(ch chan models.Binary, value string) {
 	for _, bit := range value {
 		switch bit {

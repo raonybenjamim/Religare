@@ -125,8 +125,8 @@ func (reader *ChannelReader) binaryToText(binaryString string) (string, error) {
 	return text, nil
 }
 
-func (reader *ChannelReader) isValidStringMessage(expectedBinary string, messageData string) bool {
-	expectedHash, err := reader.binaryToText(expectedBinary)
+func (reader *ChannelReader) isValidStringMessage(expectedBinaryChecksum string, messageData string) bool {
+	expectedHash, err := reader.binaryToText(expectedBinaryChecksum)
 
 	if err != nil {
 		return false
