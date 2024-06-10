@@ -14,6 +14,9 @@ type ChannelReader struct {
 }
 
 func (reader *ChannelReader) ReadChannel() {
+
+	go helpers.HealthcheckPrint("Reading messages")
+
 	for {
 		if !(reader.getDataFromChannel(models.ValidStartBits) == models.ValidStart) {
 			continue
