@@ -19,12 +19,18 @@ func main() {
 
 	var signalGenerator converter.SignalGenerator
 
-	switch generatorType {
-	case &models.GeneratorType.Random:
+	switch *generatorType {
+	case models.GeneratorType.Random:
 		signalGenerator = converter.NewRandomSignalGenerator(models.ConverterChannelSize)
 
-	case &models.GeneratorType.Wifi:
+	case models.GeneratorType.Wifi:
 		signalGenerator = converter.NewWifiSignalGenerator(models.ConverterChannelSize, models.WifiThreshold)
+
+	case models.GeneratorType.TextInput:
+		signalGenerator = converter.NewTextInputSignalGenerator(models.ConverterChannelSize)
+
+	default:
+		panic(fmt.Sprintf("No generator type selected. Value was: %v", *generatorType))
 	}
 
 	// Generate Signal

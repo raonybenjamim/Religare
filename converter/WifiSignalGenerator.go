@@ -66,8 +66,8 @@ func convertToBinary(threshold float64) (models.Binary, error) {
 	}
 
 	if strength > threshold {
-		return 1, nil
+		return models.One, nil
 	} else {
-		return 0, nil
+		return models.Zero, nil
 	}
 }
