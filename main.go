@@ -21,10 +21,10 @@ func main() {
 
 	switch generatorType {
 	case &models.GeneratorType.Random:
-		signalGenerator = converter.NewRandomSignalGenerator(200)
+		signalGenerator = converter.NewRandomSignalGenerator(models.ConverterChannelSize)
 
 	case &models.GeneratorType.Wifi:
-		signalGenerator = converter.NewWifiSignalGenerator(200, 0.75)
+		signalGenerator = converter.NewWifiSignalGenerator(models.ConverterChannelSize, models.WifiThreshold)
 	}
 
 	// Generate Signal
