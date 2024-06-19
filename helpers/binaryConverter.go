@@ -52,7 +52,7 @@ func HexTo4BitBinary(hexString string) (string, error) {
 }
 
 func BinaryStringToBinaryData(value string) []models.Binary {
-	binaryData := make([]models.Binary, len(value))
+	var binaryData []models.Binary
 
 	for _, bitChar := range value {
 

@@ -37,6 +37,8 @@ func (reader *ChannelReader) ReadChannel() {
 
 			if err == nil {
 				println("Got message: " + textContent)
+			} else {
+				println("Got Error: " + err.Error())
 			}
 
 		case models.MessageType.TextFile:
@@ -126,12 +128,38 @@ func (reader *ChannelReader) binaryToText(binaryString string) (string, error) {
 	return text, nil
 }
 
+func (reader *ChannelReader) binaryToHex(binaryString string) (string, error) {
+	if len(binaryString)%4 != 0 {
+		return "", errors.New("binary string length is not a multiple of 4")
+	}
+
+	var hexString string
+
+	for i := 0; i < len(binaryString); i += 4 {
+		// Get the next 4 bits
+		bitChunk := binaryString[i : i+4]
+
+		// Convert the 4-bit binary string to a decimal (base 10) integer
+		decimalValue, err := strconv.ParseInt(bitChunk, 2, 64)
+		if err != nil {
+			return "", err
+		}
+
+		// Convert the integer to a corresponding hexadecimal character
+		hexString += strconv.FormatInt(decimalValue, 16)
+	}
+
+	return hexString, nil
+}
+
 func (reader *ChannelReader) isValidStringMessage(expectedBinaryChecksum string, messageData string) bool {
-	expectedHash, err := reader.binaryToText(expectedBinaryChecksum)
+	expectedHash, err := reader.binaryToHex(expectedBinaryChecksum)
 
 	if err != nil {
 		return false
 	}
+
+	println("Expected Hash: ", expectedHash)
 
 	messageHash := helpers.GetMd5HashFromString(messageData)
 

@@ -27,19 +27,25 @@ func (tsg *TextInputSignalGenerator) GenerateSignal() {
 
 		checkSum := helpers.GetMd5HashFromString(message)
 
+		binaryChecksum, err := helpers.HexTo4BitBinary(checkSum)
+
+		if err != nil {
+			panic("fatal failure while generating message md5")
+		}
+
+		println("Checksum original: ", checkSum)
+
 		// create valid headers
 		headers := models.ValidStart +
 			models.MessageType.Text +
-			helpers.StringToBinaryString(checkSum, 4) +
+			binaryChecksum +
 			helpers.IntToBinaryString(len(message), 10)
 
 		messageBinary := helpers.StringToBinaryString(message, 8)
 
-		fmt.Println(headers + messageBinary)
-		fmt.Println("Checksum size: ", len(helpers.StringToBinaryString(checkSum, 4)))
-		fmt.Println("checksum: ", checkSum, "size: ", len(checkSum))
+		binaryData := helpers.BinaryStringToBinaryData(headers + messageBinary)
 
-		for _, bit := range helpers.BinaryStringToBinaryData(headers + messageBinary) {
+		for _, bit := range binaryData {
 			tsg.channel <- bit
 		}
 	}
