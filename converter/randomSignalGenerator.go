@@ -28,3 +28,7 @@ func (rsg *RandomSignalGenerator) GenerateSignal() {
 		rsg.Channel <- rsg.generateBinary()
 	}
 }
+
+func (rsg *RandomSignalGenerator) GetChannel() chan models.Binary {
+	return rsg.Channel
+}
