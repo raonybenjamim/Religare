@@ -33,8 +33,6 @@ func (tsg *TextInputSignalGenerator) GenerateSignal() {
 			panic("fatal failure while generating message md5")
 		}
 
-		println("Checksum original: ", checkSum)
-
 		// create valid headers
 		headers := models.ValidStart +
 			models.MessageType.Text +

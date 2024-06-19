@@ -37,8 +37,6 @@ func (reader *ChannelReader) ReadChannel() {
 
 			if err == nil {
 				println("Got message: " + textContent)
-			} else {
-				println("Got Error: " + err.Error())
 			}
 
 		case models.MessageType.TextFile:
@@ -158,8 +156,6 @@ func (reader *ChannelReader) isValidStringMessage(expectedBinaryChecksum string,
 	if err != nil {
 		return false
 	}
-
-	println("Expected Hash: ", expectedHash)
 
 	messageHash := helpers.GetMd5HashFromString(messageData)
 
