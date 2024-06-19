@@ -6,13 +6,13 @@ import (
 )
 
 type RandomSignalGenerator struct {
-	Channel    chan models.Binary
+	channel    chan models.Binary
 	BufferSize int
 }
 
 func NewRandomSignalGenerator(bufferSize int) *RandomSignalGenerator {
 	return &RandomSignalGenerator{
-		Channel:    make(chan models.Binary, bufferSize),
+		channel:    make(chan models.Binary, bufferSize),
 		BufferSize: bufferSize,
 	}
 }
@@ -25,10 +25,10 @@ func (RandomSignalGenerator) generateBinary() models.Binary {
 
 func (rsg *RandomSignalGenerator) GenerateSignal() {
 	for {
-		rsg.Channel <- rsg.generateBinary()
+		rsg.channel <- rsg.generateBinary()
 	}
 }
 
 func (rsg *RandomSignalGenerator) GetChannel() chan models.Binary {
-	return rsg.Channel
+	return rsg.channel
 }
