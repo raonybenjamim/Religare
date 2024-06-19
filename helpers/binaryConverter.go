@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"lazarus/models"
 	"strconv"
+	"strings"
 )
 
 func ConvertBinaryToInt(binaryString string) (int, error) {
@@ -31,6 +32,23 @@ func StringToBinaryString(value string, zfill int) string {
 	}
 
 	return binaryString
+}
+
+func HexTo4BitBinary(hexString string) (string, error) {
+	var binaryString strings.Builder
+
+	for _, char := range hexString {
+		// Convert the hex character to an integer
+		value, err := strconv.ParseInt(string(char), 16, 64)
+		if err != nil {
+			return "", err
+		}
+		// Convert the integer to a 4-bit binary string
+		binaryChar := fmt.Sprintf("%04b", value)
+		binaryString.WriteString(binaryChar)
+	}
+
+	return binaryString.String(), nil
 }
 
 func BinaryStringToBinaryData(value string) []models.Binary {
