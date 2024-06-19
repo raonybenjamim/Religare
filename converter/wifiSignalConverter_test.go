@@ -6,7 +6,7 @@ import (
 )
 
 func TestValueFromWifiSignal(t *testing.T) {
-	signalStrength, err := GetSignalStrength()
+	signalStrength, err := getSignalStrength()
 
 	// Check if there was an err
 	if err != nil {
@@ -22,7 +22,7 @@ func TestValueFromWifiSignal(t *testing.T) {
 func TestBinaryConvertFunction(t *testing.T) {
 	threshold := 0.5
 
-	binaryData, err := ConvertToBinary(threshold)
+	binaryData, err := convertToBinary(threshold)
 
 	if err != nil {
 		t.Fatalf("ConvertToBinary returned an error: %v", err)

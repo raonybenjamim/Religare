@@ -8,7 +8,39 @@ import (
 	"strconv"
 )
 
-func GetSignalStrength() (float64, error) {
+type WifiSignalGenerator struct {
+	channel    chan models.Binary
+	BufferSize int
+	threshold  float64
+}
+
+func NewWifiSignalGenerator(bufferSize int, threshhold float64) *WifiSignalGenerator {
+	return &WifiSignalGenerator{
+		channel:    make(chan models.Binary, bufferSize),
+		BufferSize: bufferSize,
+		threshold:  threshhold,
+	}
+}
+
+func (wsg *WifiSignalGenerator) GetChannel() chan models.Binary {
+	return wsg.channel
+}
+
+func (wsg *WifiSignalGenerator) GenerateSignal() {
+	for {
+		binary, err := convertToBinary(wsg.threshold)
+		if err != nil {
+			fmt.Println("Error:", err)
+			close(wsg.channel)
+			return
+		}
+
+		wsg.channel <- binary
+
+	}
+}
+
+func getSignalStrength() (float64, error) {
 	cmd := exec.Command("iwconfig")
 	output, err := cmd.CombinedOutput()
 	if err != nil {
@@ -27,8 +59,8 @@ func GetSignalStrength() (float64, error) {
 	return float64(numerator) / float64(denominator), nil
 }
 
-func ConvertToBinary(threshold float64) (models.Binary, error) {
-	strength, err := GetSignalStrength()
+func convertToBinary(threshold float64) (models.Binary, error) {
+	strength, err := getSignalStrength()
 	if err != nil {
 		return 0, err
 	}
@@ -37,19 +69,5 @@ func ConvertToBinary(threshold float64) (models.Binary, error) {
 		return 1, nil
 	} else {
 		return 0, nil
-	}
-}
-
-func AddBinaryData(threshold float64, ch chan<- models.Binary) {
-	for {
-		binary, err := ConvertToBinary(threshold)
-		if err != nil {
-			fmt.Println("Error:", err)
-			close(ch)
-			return
-		}
-
-		ch <- binary
-
 	}
 }
