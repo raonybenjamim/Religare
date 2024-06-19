@@ -15,11 +15,6 @@ func main() {
 		models.GeneratorType.Wifi,
 		fmt.Sprintf("Define what will be the data generation behavior. Valid values are: %v", models.GeneratorType))
 
-	// THIS WAY WE READ SIGNALS FROM THE WIFI
-	// binaryChannel := make(chan models.Binary, models.ConverterChannelSize)
-
-	// go signalConverter.AddBinaryData(0.75, binaryChannel)
-
 	flag.Parse()
 
 	var signalGenerator converter.SignalGenerator
@@ -28,6 +23,8 @@ func main() {
 	case &models.GeneratorType.Random:
 		signalGenerator = converter.NewRandomSignalGenerator(200)
 
+	case &models.GeneratorType.Wifi:
+		signalGenerator = converter.NewWifiSignalGenerator(200, 0.75)
 	}
 
 	// Generate Signal
