@@ -50,3 +50,11 @@ That will start the application in the WiFi mode. If you want to run in a differ
 ```
 go run main.go --generator-type=TextInput
 ```
+
+## Want to know more? 
+
+You can access the full protocol definition [here (Portuguese text)](https://gentle-aura-fd4.notion.site/Proposta-Protocolo-Religare-ba51bc05f87542179d4187354ae60afd?pvs=74)
+
+## License 
+
+This project is licensed under the GPL 3.0 license - see the LICENSE.md file for details.
