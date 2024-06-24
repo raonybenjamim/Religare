@@ -35,3 +35,10 @@ func HealthcheckPrint(message string) {
 		fmt.Println(message)
 	}
 }
+
+func PrintLicense() {
+	fmt.Println("Copyright (C) <year> <author name>")
+	fmt.Println("This program comes with ABSOLUTELY NO WARRANTY;")
+	fmt.Println("This is free software, and you are welcome to redistribute it")
+	fmt.Println("under certain conditions; Check https://www.gnu.org/licenses/ for details.")
+}

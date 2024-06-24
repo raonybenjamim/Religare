@@ -22,11 +22,14 @@ import (
 	"flag"
 	"fmt"
 	"lazarus/converter"
+	"lazarus/helpers"
 	"lazarus/interpreter"
 	"lazarus/models"
 )
 
 func main() {
+
+	helpers.PrintLicense()
 
 	generatorType := flag.String(
 		"generator-type",
