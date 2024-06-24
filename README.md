@@ -55,6 +55,8 @@ go run main.go --generator-type=TextInput
 
 You can access the full protocol definition [here (Portuguese text)](https://gentle-aura-fd4.notion.site/Proposta-Protocolo-Religare-ba51bc05f87542179d4187354ae60afd?pvs=74)
 
+You can also reach me out at my [Instagram](https://www.instagram.com/espiritismoarretado) of [TikTok](https://www.tiktok.com/@raonybenjamim) profiles
+
 ## License 
 
 This project is licensed under the GPL 3.0 license - see the LICENSE.md file for details.
