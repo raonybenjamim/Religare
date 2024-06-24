@@ -1,7 +1,7 @@
 Project Religare
 =============
 
-Religare is an instrumental trans communication that aims to implement the Religare Protocol using golang and wifi signals as the modulation source.
+Religare is an instrumental trans communication application that aims to implement the Religare Protocol using golang and wifi signals as the modulation source.
 
 ## What is the Religre Protocol?
 
