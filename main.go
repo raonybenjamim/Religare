@@ -21,10 +21,10 @@ package main
 import (
 	"flag"
 	"fmt"
-	"lazarus/converter"
-	"lazarus/helpers"
-	"lazarus/interpreter"
-	"lazarus/models"
+	"religare/converter"
+	"religare/helpers"
+	"religare/interpreter"
+	"religare/models"
 )
 
 func main() {

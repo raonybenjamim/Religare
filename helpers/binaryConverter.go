@@ -9,7 +9,7 @@ package helpers
 import (
 	"errors"
 	"fmt"
-	"lazarus/models"
+	"religare/models"
 	"strconv"
 	"strings"
 )

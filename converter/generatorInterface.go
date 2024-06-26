@@ -6,7 +6,7 @@
  */
 package converter
 
-import "lazarus/models"
+import "religare/models"
 
 type SignalGenerator interface {
 	GetChannel() chan models.Binary

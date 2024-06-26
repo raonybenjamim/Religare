@@ -8,7 +8,7 @@ package helpers
 
 import (
 	"fmt"
-	"lazarus/models"
+	"religare/models"
 	"os"
 	"strings"
 	"time"

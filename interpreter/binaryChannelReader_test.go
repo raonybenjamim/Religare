@@ -7,7 +7,7 @@
 package interpreter
 
 import (
-	"lazarus/models"
+	"religare/models"
 	"math/rand"
 	"strconv"
 	"strings"

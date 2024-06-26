@@ -9,7 +9,7 @@ package helpers
 import (
 	"crypto/md5"
 	"fmt"
-	"lazarus/models"
+	"religare/models"
 )
 
 func IsValidMessageHeader(header string) bool {

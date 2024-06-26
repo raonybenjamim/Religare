@@ -8,7 +8,7 @@ package converter
 
 import (
 	"fmt"
-	"lazarus/models"
+	"religare/models"
 	"os/exec"
 	"regexp"
 	"strconv"

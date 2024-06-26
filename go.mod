@@ -1,4 +1,4 @@
-module lazarus
+module religare
 
 go 1.22.3
 
