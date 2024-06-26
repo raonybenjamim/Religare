@@ -77,7 +77,7 @@ func BinaryStringToBinaryData(value string) []models.Binary {
 func BinaryStringToString(binaryString string) (string, error) {
 	var text string
 
-	if len(binaryString)%8 != 0 {
+	if len(binaryString)%models.ByteSize != 0 {
 		return "", errors.New("binary string length is not a multiple of 8")
 	}
 
