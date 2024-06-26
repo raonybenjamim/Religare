@@ -11,5 +11,5 @@ import "lazarus/models"
 
 type ChannelInterpreter interface {
 	ReadChannel()
-	GetChannel() chan models.Binary
+	GetChannel() <-chan models.Binary
 }

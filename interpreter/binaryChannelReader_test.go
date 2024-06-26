@@ -21,7 +21,7 @@ var validHeadersForTextMessage = models.MessageType.Text + mockChecksum + mockMe
 func TestGetHeaders(t *testing.T) {
 	communicationChannel := make(chan models.Binary, len(validHeadersForTextMessage))
 
-	channelReader := ChannelReader{
+	channelReader := BinaryDataInterpreter{
 		Channel: communicationChannel,
 	}
 
@@ -65,7 +65,7 @@ func TestBinaryToText(t *testing.T) {
 
 	communicationChannel := make(chan models.Binary, len(validHeadersForTextMessage))
 
-	channelReader := ChannelReader{
+	channelReader := BinaryDataInterpreter{
 		Channel: communicationChannel,
 	}
 
@@ -97,7 +97,7 @@ func TestValidMessageIsCorrectlyChecked(t *testing.T) {
 			false},
 	}
 
-	channelReader := ChannelReader{
+	channelReader := BinaryDataInterpreter{
 		Channel: make(chan models.Binary),
 	}
 
