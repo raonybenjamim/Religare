@@ -36,9 +36,15 @@ func main() {
 		models.GeneratorType.Wifi,
 		fmt.Sprintf("Define what will be the data generation behavior. Valid values are: %v", models.GeneratorType))
 
+	noValidation := flag.Bool(
+		"no-validation",
+		false,
+		"If 'no-valiation' is true, the application will simply show any data received on the screen without any validation")
+
 	flag.Parse()
 
 	var signalGenerator converter.SignalGenerator
+	var channelInterpreter interpreter.ChannelInterpreter
 
 	switch *generatorType {
 	case models.GeneratorType.Random:
@@ -57,9 +63,15 @@ func main() {
 	// Generate Signal
 	go signalGenerator.GenerateSignal()
 
-	channelReader := interpreter.ChannelReader{
-		Channel: signalGenerator.GetChannel(),
+	if *noValidation {
+		channelInterpreter = &interpreter.BinaryDataBypassReader{
+			Channel: signalGenerator.GetChannel(),
+		}
+	} else {
+		channelInterpreter = &interpreter.BinaryDataInterpreter{
+			Channel: signalGenerator.GetChannel(),
+		}
 	}
 
-	channelReader.ReadChannel()
+	channelInterpreter.ReadChannel()
 }
