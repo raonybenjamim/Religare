@@ -8,7 +8,9 @@ package helpers
 
 import (
 	"fmt"
+	"lazarus/models"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -41,4 +43,27 @@ func PrintLicense() {
 	fmt.Println("This program comes with ABSOLUTELY NO WARRANTY;")
 	fmt.Println("This is free software, and you are welcome to redistribute it")
 	fmt.Println("under certain conditions; Check https://www.gnu.org/licenses/ for details.")
+}
+
+func GetDataFromChannel(channel <-chan models.Binary, quantity int) string {
+	var builder strings.Builder
+
+	for i := 0; i < quantity; i++ {
+		binaryValue, ok := <-channel
+
+		if !ok {
+			panic("Channel closed before enough data was provided")
+		}
+
+		switch binaryValue {
+		case models.One:
+			builder.WriteString("1")
+		case models.Zero:
+			builder.WriteString("0")
+		default:
+			panic("Channel data is neither 0 or 1")
+		}
+	}
+
+	return builder.String()
 }

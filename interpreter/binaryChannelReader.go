@@ -12,7 +12,6 @@ import (
 	"lazarus/helpers"
 	"lazarus/models"
 	"strconv"
-	"strings"
 )
 
 type BinaryDataInterpreter struct {
@@ -27,7 +26,7 @@ func (reader *BinaryDataInterpreter) ReadChannel() {
 	// go helpers.HealthcheckPrint("Reading messages")
 
 	for {
-		if !(reader.getDataFromChannel(models.ValidStartBits) == models.ValidStart) {
+		if !(helpers.GetDataFromChannel(reader.Channel, models.ValidStartBits) == models.ValidStart) {
 			continue
 		}
 
@@ -66,16 +65,16 @@ func (reader *BinaryDataInterpreter) ReadChannel() {
 }
 
 func (reader *BinaryDataInterpreter) readHeadersFromChannel() (models.MessageHeaders, error) {
-	messageType := reader.getDataFromChannel(models.MessageTypeBits)
+	messageType := helpers.GetDataFromChannel(reader.Channel, models.MessageTypeBits)
 
 	// Only accept valid message types
 	if !helpers.IsValidMessageHeader(messageType) {
 		return models.MessageHeaders{}, fmt.Errorf("wrong message type received: %v", messageType)
 	}
 
-	checksumData := reader.getDataFromChannel(models.ChecksumBits)
+	checksumData := helpers.GetDataFromChannel(reader.Channel, models.ChecksumBits)
 
-	messageSize, err := helpers.ConvertBinaryToInt(reader.getDataFromChannel(models.MessageSizeBits))
+	messageSize, err := helpers.ConvertBinaryToInt(helpers.GetDataFromChannel(reader.Channel, models.MessageSizeBits))
 
 	if err != nil {
 		return models.MessageHeaders{}, err
@@ -86,29 +85,6 @@ func (reader *BinaryDataInterpreter) readHeadersFromChannel() (models.MessageHea
 		Checksum:         checksumData,
 		MessageSizeBytes: messageSize,
 	}, nil
-}
-
-func (reader *BinaryDataInterpreter) getDataFromChannel(quantity int) string {
-	var builder strings.Builder
-
-	for i := 0; i < quantity; i++ {
-		binaryValue, ok := <-reader.Channel
-
-		if !ok {
-			panic("Channel closed before enough data was provided")
-		}
-
-		switch binaryValue {
-		case models.One:
-			builder.WriteString("1")
-		case models.Zero:
-			builder.WriteString("0")
-		default:
-			panic("Channel data is neither 0 or 1")
-		}
-	}
-
-	return builder.String()
 }
 
 func (reader *BinaryDataInterpreter) binaryToText(binaryString string) (string, error) {
@@ -173,7 +149,7 @@ func (reader *BinaryDataInterpreter) isValidStringMessage(expectedBinaryChecksum
 }
 
 func (reader *BinaryDataInterpreter) readTextMessageFromChannel(headers models.MessageHeaders) (string, error) {
-	textContent, err := reader.binaryToText(reader.getDataFromChannel(headers.MessageSizeBytes * models.ByteSize))
+	textContent, err := reader.binaryToText(helpers.GetDataFromChannel(reader.Channel, headers.MessageSizeBytes*models.ByteSize))
 
 	if err != nil {
 		return "", fmt.Errorf("Error while reading binary data form channel: " + err.Error())
