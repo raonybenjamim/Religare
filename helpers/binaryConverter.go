@@ -97,3 +97,27 @@ func BinaryStringToString(binaryString string) (string, error) {
 
 	return text, nil
 }
+
+func BinaryStringToHexString(binaryString string) (string, error) {
+	if len(binaryString)%4 != 0 {
+		return "", errors.New("binary string length is not a multiple of 4")
+	}
+
+	var hexString string
+
+	for i := 0; i < len(binaryString); i += 4 {
+		// Get the next 4 bits
+		bitChunk := binaryString[i : i+4]
+
+		// Convert the 4-bit binary string to a decimal (base 10) integer
+		decimalValue, err := strconv.ParseInt(bitChunk, 2, 64)
+		if err != nil {
+			return "", err
+		}
+
+		// Convert the integer to a corresponding hexadecimal character
+		hexString += strconv.FormatInt(decimalValue, 16)
+	}
+
+	return hexString, nil
+}
