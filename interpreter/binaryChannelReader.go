@@ -7,11 +7,9 @@
 package interpreter
 
 import (
-	"errors"
 	"fmt"
 	"lazarus/helpers"
 	"lazarus/models"
-	"strconv"
 )
 
 type BinaryDataInterpreter struct {
@@ -87,32 +85,8 @@ func (reader *BinaryDataInterpreter) readHeadersFromChannel() (models.MessageHea
 	}, nil
 }
 
-func (reader *BinaryDataInterpreter) binaryToHex(binaryString string) (string, error) {
-	if len(binaryString)%4 != 0 {
-		return "", errors.New("binary string length is not a multiple of 4")
-	}
-
-	var hexString string
-
-	for i := 0; i < len(binaryString); i += 4 {
-		// Get the next 4 bits
-		bitChunk := binaryString[i : i+4]
-
-		// Convert the 4-bit binary string to a decimal (base 10) integer
-		decimalValue, err := strconv.ParseInt(bitChunk, 2, 64)
-		if err != nil {
-			return "", err
-		}
-
-		// Convert the integer to a corresponding hexadecimal character
-		hexString += strconv.FormatInt(decimalValue, 16)
-	}
-
-	return hexString, nil
-}
-
 func (reader *BinaryDataInterpreter) isValidStringMessage(expectedBinaryChecksum string, messageData string) bool {
-	expectedHash, err := reader.binaryToHex(expectedBinaryChecksum)
+	expectedHash, err := helpers.BinaryStringToHexString(expectedBinaryChecksum)
 
 	if err != nil {
 		return false
