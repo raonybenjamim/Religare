@@ -7,7 +7,7 @@
 package converter
 
 import (
-	"lazarus/models"
+	"religare/models"
 	"math/rand"
 )
 

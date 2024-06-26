@@ -8,8 +8,8 @@ package converter
 
 import (
 	"fmt"
-	"lazarus/helpers"
-	"lazarus/models"
+	"religare/helpers"
+	"religare/models"
 )
 
 type TextInputSignalGenerator struct {

@@ -8,8 +8,8 @@ package interpreter
 
 import (
 	"fmt"
-	"lazarus/helpers"
-	"lazarus/models"
+	"religare/helpers"
+	"religare/models"
 	"time"
 )
 

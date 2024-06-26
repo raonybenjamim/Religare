@@ -7,7 +7,7 @@
 
 package interpreter
 
-import "lazarus/models"
+import "religare/models"
 
 type ChannelInterpreter interface {
 	ReadChannel()
