@@ -15,11 +15,14 @@ import (
 	"strings"
 )
 
-type ChannelReader struct {
+type BinaryDataInterpreter struct {
 	Channel <-chan models.Binary
 }
 
-func (reader *ChannelReader) ReadChannel() {
+func (reader *BinaryDataInterpreter) GetChannel() <-chan models.Binary {
+	return reader.Channel
+}
+func (reader *BinaryDataInterpreter) ReadChannel() {
 
 	// go helpers.HealthcheckPrint("Reading messages")
 
@@ -62,7 +65,7 @@ func (reader *ChannelReader) ReadChannel() {
 	}
 }
 
-func (reader *ChannelReader) readHeadersFromChannel() (models.MessageHeaders, error) {
+func (reader *BinaryDataInterpreter) readHeadersFromChannel() (models.MessageHeaders, error) {
 	messageType := reader.getDataFromChannel(models.MessageTypeBits)
 
 	// Only accept valid message types
@@ -85,7 +88,7 @@ func (reader *ChannelReader) readHeadersFromChannel() (models.MessageHeaders, er
 	}, nil
 }
 
-func (reader *ChannelReader) getDataFromChannel(quantity int) string {
+func (reader *BinaryDataInterpreter) getDataFromChannel(quantity int) string {
 	var builder strings.Builder
 
 	for i := 0; i < quantity; i++ {
@@ -108,7 +111,7 @@ func (reader *ChannelReader) getDataFromChannel(quantity int) string {
 	return builder.String()
 }
 
-func (reader *ChannelReader) binaryToText(binaryString string) (string, error) {
+func (reader *BinaryDataInterpreter) binaryToText(binaryString string) (string, error) {
 	var text string
 
 	if len(binaryString)%8 != 0 {
@@ -132,7 +135,7 @@ func (reader *ChannelReader) binaryToText(binaryString string) (string, error) {
 	return text, nil
 }
 
-func (reader *ChannelReader) binaryToHex(binaryString string) (string, error) {
+func (reader *BinaryDataInterpreter) binaryToHex(binaryString string) (string, error) {
 	if len(binaryString)%4 != 0 {
 		return "", errors.New("binary string length is not a multiple of 4")
 	}
@@ -156,7 +159,7 @@ func (reader *ChannelReader) binaryToHex(binaryString string) (string, error) {
 	return hexString, nil
 }
 
-func (reader *ChannelReader) isValidStringMessage(expectedBinaryChecksum string, messageData string) bool {
+func (reader *BinaryDataInterpreter) isValidStringMessage(expectedBinaryChecksum string, messageData string) bool {
 	expectedHash, err := reader.binaryToHex(expectedBinaryChecksum)
 
 	if err != nil {
@@ -169,7 +172,7 @@ func (reader *ChannelReader) isValidStringMessage(expectedBinaryChecksum string,
 
 }
 
-func (reader *ChannelReader) readTextMessageFromChannel(headers models.MessageHeaders) (string, error) {
+func (reader *BinaryDataInterpreter) readTextMessageFromChannel(headers models.MessageHeaders) (string, error) {
 	textContent, err := reader.binaryToText(reader.getDataFromChannel(headers.MessageSizeBytes * models.ByteSize))
 
 	if err != nil {
