@@ -87,30 +87,6 @@ func (reader *BinaryDataInterpreter) readHeadersFromChannel() (models.MessageHea
 	}, nil
 }
 
-func (reader *BinaryDataInterpreter) binaryToText(binaryString string) (string, error) {
-	var text string
-
-	if len(binaryString)%8 != 0 {
-		return "", errors.New("binary string length is not a multiple of 8")
-	}
-
-	for i := 0; i < len(binaryString); i += models.ByteSize {
-		// Get the next 8 bits
-		byteString := binaryString[i : i+models.ByteSize]
-
-		// Convert the 8-bit binary string to a decimal (base 10) integer
-		charCode, err := strconv.ParseInt(byteString, 2, 64)
-		if err != nil {
-			return "", err
-		}
-
-		// Convert the integer to a corresponding ASCII character
-		text += string(rune(charCode))
-	}
-
-	return text, nil
-}
-
 func (reader *BinaryDataInterpreter) binaryToHex(binaryString string) (string, error) {
 	if len(binaryString)%4 != 0 {
 		return "", errors.New("binary string length is not a multiple of 4")
@@ -149,7 +125,7 @@ func (reader *BinaryDataInterpreter) isValidStringMessage(expectedBinaryChecksum
 }
 
 func (reader *BinaryDataInterpreter) readTextMessageFromChannel(headers models.MessageHeaders) (string, error) {
-	textContent, err := reader.binaryToText(helpers.GetDataFromChannel(reader.Channel, headers.MessageSizeBytes*models.ByteSize))
+	textContent, err := helpers.BinaryStringToString(helpers.GetDataFromChannel(reader.Channel, headers.MessageSizeBytes*models.ByteSize))
 
 	if err != nil {
 		return "", fmt.Errorf("Error while reading binary data form channel: " + err.Error())
