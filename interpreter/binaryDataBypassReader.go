@@ -33,7 +33,6 @@ func (reader *BinaryDataBypassReader) ReadChannel() {
 		if err != nil {
 			fmt.Println("error while reading binary data form channel: " + err.Error())
 		}
-		fmt.Print(binaryCharacter)
 		fmt.Print(textCharacter)
 	}
 }
