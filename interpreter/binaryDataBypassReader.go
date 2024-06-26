@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"lazarus/helpers"
 	"lazarus/models"
+	"time"
 )
 
 type BinaryDataBypassReader struct {
@@ -21,7 +22,10 @@ func (reader *BinaryDataBypassReader) GetChannel() <-chan models.Binary {
 }
 
 func (reader *BinaryDataBypassReader) ReadChannel() {
-	for {
+	ticker := time.NewTicker(500 * time.Millisecond)
+	defer ticker.Stop()
+
+	for range ticker.C {
 		binaryCharacter := helpers.GetDataFromChannel(reader.Channel, models.ByteSize)
 
 		textCharacter, err := helpers.BinaryStringToString(binaryCharacter)
@@ -29,7 +33,7 @@ func (reader *BinaryDataBypassReader) ReadChannel() {
 		if err != nil {
 			fmt.Println("error while reading binary data form channel: " + err.Error())
 		}
-
-		println(textCharacter)
+		fmt.Print(binaryCharacter)
+		fmt.Print(textCharacter)
 	}
 }
