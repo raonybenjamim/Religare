@@ -2,7 +2,7 @@ name: Build and Release
 
 on:
   release:
-    types: [published]
+    types: [published]  
 
 jobs:
   build:
@@ -24,7 +24,11 @@ jobs:
       - name: Build the binary
         run: |
           mkdir -p dist/${{ matrix.goos }}_${{ matrix.goarch }}
-          GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -o dist/${{ matrix.goos }}_${{ matrix.goarch }}/religare
+          if [ "${{ matrix.goos }}" = "windows" ]; then
+            GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -o dist/${{ matrix.goos }}_${{ matrix.goarch }}/religare.exe
+          else
+            GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -o dist/${{ matrix.goos }}_${{ matrix.goarch }}/religare
+          fi
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
@@ -48,22 +52,10 @@ jobs:
           name: windows_amd64_binary
           path: dist/windows_amd64/
 
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
+      - name: Upload the artifacts
+        uses: skx/github-action-publish-binaries@master
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_PAT_SECRET }}
-        with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: dist/linux_amd64/religare
-          asset_name: religare-linux
-          asset_content_type: application/octet-stream
-
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACTIONS_PAT_SECRET }}
-        with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: dist/windows_amd64/religare.exe
-          asset_name: religare-windows.exe
-          asset_content_type: application/octet-stream
+        with: 
+          args: 'dist/*'
+      
