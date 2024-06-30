@@ -64,6 +64,16 @@ go run main.go --generator-type=random --no-validation
 go run main.go --generator-type=wifi --no-validation
 ```
 
+### Using the binaries
+
+Each release also provide bundled binaries compatible with both windows and linux. You can use them instead of the `go run main.go` command. 
+
+For example, if you are on windows, download the correct binary and use it like this (the same flags and parameters are still applied):
+
+```
+.\Religare.exe --generator-type=<chose your generator>
+```
+
 ## Want to know more? 
 
 You can access the full protocol definition [here (Portuguese text)](https://gentle-aura-fd4.notion.site/Proposta-Protocolo-Religare-ba51bc05f87542179d4187354ae60afd?pvs=74)
