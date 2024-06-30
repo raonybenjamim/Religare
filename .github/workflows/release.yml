@@ -1,61 +1,28 @@
-name: Build and Release
+name: Release
 
 on:
   release:
-    types: [published]  
+    types: [created]
+
+permissions:
+  contents: write
+  packages: write
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        goos: [linux, windows]
-        goarch: [amd64]
-
-    steps:
-      - name: Check out the repository
-        uses: actions/checkout@v3
-
-      - name: Set up Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: '>=1.22' # Specify the Go version you need
-
-      - name: Build the binary
-        run: |
-          mkdir -p dist/${{ matrix.goos }}_${{ matrix.goarch }}
-          if [ "${{ matrix.goos }}" = "windows" ]; then
-            GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -o dist/${{ matrix.goos }}_${{ matrix.goarch }}/religare.exe
-          else
-            GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -o dist/${{ matrix.goos }}_${{ matrix.goarch }}/religare
-          fi
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ matrix.goos }}_${{ matrix.goarch }}_binary
-          path: dist/${{ matrix.goos }}_${{ matrix.goarch }}
-
-  upload:
-    needs: build
+  release-linux-amd64:
+    name: Release Linux/amd64
     runs-on: ubuntu-latest
     steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v3
+      - uses: actions/checkout@v4
+      - uses: wangyoucao577/go-release-action@v1
+        name: build-for-linux-64
         with:
-          name: linux_amd64_binary
-          path: dist/linux_amd64/
-          
-      - name: Download build artifacts
-        uses: actions/download-artifact@v3
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          goos: linux
+          goarch: amd64
+      - uses: wangyoucao577/go-release-action@v1
+        name: build-for-windows-64
         with:
-          name: windows_amd64_binary
-          path: dist/windows_amd64/
-
-      - name: Upload the artifacts
-        uses: skx/github-action-publish-binaries@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACTIONS_PAT_SECRET }}
-        with: 
-          args: 'dist/*'
-      
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          goos: windows
+          goarch: amd64
