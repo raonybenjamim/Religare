@@ -39,7 +39,7 @@ The implementation of this protocol is for experimental purposes only. The proje
 
 ## How to run? 
 
-You can run the application with: 
+This application **should** run propperly on Windows and Linux systems. You can run the application with: 
 
 ```
 go run main.go
@@ -48,7 +48,9 @@ go run main.go
 That will start the application in the WiFi mode. If you want to run in a different mode, provide the `generator-type` parameter: 
 
 ```
-go run main.go --generator-type=TextInput
+go run main.go --generator-type=textInput
+go run main.go --generator-type=random
+go run main.go --generator-type=wifi
 ```
 
 ## Want to know more? 
