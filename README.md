@@ -53,6 +53,17 @@ go run main.go --generator-type=random
 go run main.go --generator-type=wifi
 ```
 
+Also, you can run the application in **no validation** mode. In this mode, the application will not perform any validation to the received data. It will simply divide the received data into 8 bit words and show it to the screen. 
+
+> NOTE: This mode is intended to **TEST PURPOSES ONLY** and should not be used for Instrumental Trans Communication experiments as it would not provide validated messages according to the Religare protocol. 
+
+You can run the application in "no validation mode" by providing the `no-validation` flag:
+
+```
+go run main.go --generator-type=random --no-validation
+go run main.go --generator-type=wifi --no-validation
+```
+
 ## Want to know more? 
 
 You can access the full protocol definition [here (Portuguese text)](https://gentle-aura-fd4.notion.site/Proposta-Protocolo-Religare-ba51bc05f87542179d4187354ae60afd?pvs=74)
