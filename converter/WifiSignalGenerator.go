@@ -7,11 +7,14 @@
 package converter
 
 import (
+	"bytes"
 	"fmt"
-	"religare/models"
 	"os/exec"
 	"regexp"
+	"religare/models"
+	"runtime"
 	"strconv"
+	"strings"
 )
 
 type WifiSignalGenerator struct {
@@ -47,6 +50,45 @@ func (wsg *WifiSignalGenerator) GenerateSignal() {
 }
 
 func getSignalStrength() (float64, error) {
+	switch runtime.GOOS {
+	case "windows":
+		return getWifiSignalStrengthWindows()
+	case "linux":
+		return getWifiSignalStrengthLinux()
+	default:
+		return 0, fmt.Errorf("unsupported platform")
+	}
+}
+
+func getWifiSignalStrengthWindows() (float64, error) {
+	cmd := exec.Command("netsh", "wlan", "show", "interfaces")
+	var out bytes.Buffer
+	cmd.Stdout = &out
+	err := cmd.Run()
+	if err != nil {
+		return 0, err
+	}
+	output := out.String()
+	signalStrength, err := parseSignalStrengthWindows(output)
+	if err != nil {
+		return 0, err
+	}
+	return float64(signalStrength) / 100, nil
+}
+
+func parseSignalStrengthWindows(output string) (int, error) {
+	re := regexp.MustCompile(`:\s*(\d+)\s*%`)
+	lines := strings.Split(output, "\n")
+	for _, line := range lines {
+		match := re.FindStringSubmatch(line)
+		if match != nil && len(match) == 2 {
+			return strconv.Atoi(match[1])
+		}
+	}
+	return 0, fmt.Errorf("signal strength not found")
+}
+
+func getWifiSignalStrengthLinux() (float64, error) {
 	cmd := exec.Command("iwconfig")
 	output, err := cmd.CombinedOutput()
 	if err != nil {
