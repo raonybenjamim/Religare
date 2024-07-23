@@ -44,9 +44,17 @@ func (wsg *WifiSignalGenerator) GenerateSignal() {
 			return
 		}
 
-		wsg.channel <- binary
+		select {
+		case wsg.channel <- binary:
+		default:
+			return
+		}
 
 	}
+}
+
+func (wsg *WifiSignalGenerator) StopSignalGeneration() {
+	close(wsg.channel)
 }
 
 func getSignalStrength() (float64, error) {
