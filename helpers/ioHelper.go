@@ -8,9 +8,11 @@ package helpers
 
 import (
 	"fmt"
-	"religare/models"
 	"os"
+	"os/signal"
+	"religare/models"
 	"strings"
+	"syscall"
 	"time"
 
 	"github.com/google/uuid"
@@ -39,7 +41,7 @@ func HealthcheckPrint(message string) {
 }
 
 func PrintLicense() {
-	fmt.Println("Copyright (C) <year> <author name>")
+	fmt.Println("Copyright (C) 2024 - Raony Benjamim")
 	fmt.Println("This program comes with ABSOLUTELY NO WARRANTY;")
 	fmt.Println("This is free software, and you are welcome to redistribute it")
 	fmt.Println("under certain conditions; Check https://www.gnu.org/licenses/ for details.")
@@ -66,4 +68,27 @@ func GetDataFromChannel(channel <-chan models.Binary, quantity int) string {
 	}
 
 	return builder.String()
+}
+
+func SetupKeyboardSignalHandling() {
+	keyboardSignalChannel := make(chan os.Signal, 1)
+
+	signal.Notify(keyboardSignalChannel, os.Interrupt, syscall.SIGTERM)
+
+	go HandleKeyboardSignals(keyboardSignalChannel)
+
+}
+
+func HandleKeyboardSignals(keyboardSignalChannel chan os.Signal) {
+	for {
+		receivedSignal := <-keyboardSignalChannel
+
+		switch receivedSignal {
+		case os.Interrupt:
+			// handle the Ctrl+C signal
+		case syscall.SIGTERM:
+			os.Exit(0)
+		}
+	}
+
 }
