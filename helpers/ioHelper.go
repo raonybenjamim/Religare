@@ -11,6 +11,7 @@ import (
 	"os"
 	"os/signal"
 	"religare/models"
+	"strconv"
 	"strings"
 	"syscall"
 	"time"
@@ -45,6 +46,21 @@ func PrintLicense() {
 	fmt.Println("This program comes with ABSOLUTELY NO WARRANTY;")
 	fmt.Println("This is free software, and you are welcome to redistribute it")
 	fmt.Println("under certain conditions; Check https://www.gnu.org/licenses/ for details.")
+}
+
+func ChoseLanguage() models.Language {
+	var response string
+
+	fmt.Println("0 for Portuguese 1 for English")
+	fmt.Scan(response)
+
+	language, err := strconv.Atoi(response)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return models.Language(language)
 }
 
 func GetDataFromChannel(channel <-chan models.Binary, quantity int) string {
