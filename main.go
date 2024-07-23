@@ -21,6 +21,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"religare/config"
 	"religare/converter"
 	"religare/helpers"
 	"religare/interpreter"
@@ -30,6 +31,7 @@ import (
 func main() {
 
 	helpers.PrintLicense()
+	config.AppLanguage = helpers.ChoseLanguage()
 
 	generatorType := flag.String(
 		"generator-type",
