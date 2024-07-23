@@ -31,6 +31,9 @@ func (tsg *TextInputSignalGenerator) GenerateSignal() {
 		fmt.Println("Enter a message")
 		fmt.Scan(&message)
 
+		// Text input messages must include an indentification
+		message = "(This message if for TEST ONLY): " + message
+
 		checkSum := helpers.GetMd5HashFromString(message)
 
 		binaryChecksum, err := helpers.HexTo4BitBinary(checkSum)
