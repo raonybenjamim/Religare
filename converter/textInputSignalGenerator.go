@@ -53,9 +53,18 @@ func (tsg *TextInputSignalGenerator) GenerateSignal() {
 		binaryData := helpers.BinaryStringToBinaryData(headers + messageBinary)
 
 		for _, bit := range binaryData {
-			tsg.channel <- bit
+			select {
+			case tsg.channel <- bit:
+			default:
+				return
+			}
+
 		}
 	}
+}
+
+func (tsg *TextInputSignalGenerator) StopSignalGeneration() {
+	close(tsg.channel)
 }
 
 func (tsg *TextInputSignalGenerator) GetChannel() chan models.Binary {

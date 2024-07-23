@@ -7,8 +7,8 @@
 package converter
 
 import (
-	"religare/models"
 	"math/rand"
+	"religare/models"
 )
 
 type RandomSignalGenerator struct {
@@ -31,10 +31,19 @@ func (RandomSignalGenerator) generateBinary() models.Binary {
 
 func (rsg *RandomSignalGenerator) GenerateSignal() {
 	for {
-		rsg.channel <- rsg.generateBinary()
+		select {
+		case rsg.channel <- rsg.generateBinary():
+
+		default:
+			return
+		}
 	}
 }
 
 func (rsg *RandomSignalGenerator) GetChannel() chan models.Binary {
 	return rsg.channel
+}
+
+func (rsg *RandomSignalGenerator) StopSignalGeneration() {
+	close(rsg.channel)
 }

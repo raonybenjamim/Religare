@@ -12,4 +12,6 @@ type SignalGenerator interface {
 	GetChannel() chan models.Binary
 
 	GenerateSignal()
+
+	StopSignalGeneration()
 }
