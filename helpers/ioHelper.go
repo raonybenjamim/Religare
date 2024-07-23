@@ -11,6 +11,7 @@ import (
 	"os"
 	"os/signal"
 	"religare/models"
+	"religare/models/translation"
 	"strconv"
 	"strings"
 	"syscall"
@@ -70,7 +71,7 @@ func GetDataFromChannel(channel <-chan models.Binary, quantity int) string {
 		binaryValue, ok := <-channel
 
 		if !ok {
-			panic("Channel closed before enough data was provided")
+			panic(translation.ErrorTexts.GetValue(translation.ChannelClosedError))
 		}
 
 		switch binaryValue {
