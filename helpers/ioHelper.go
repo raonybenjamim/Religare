@@ -53,7 +53,7 @@ func ChoseLanguage() models.Language {
 	var response string
 
 	fmt.Println("0 for Portuguese 1 for English")
-	fmt.Scan(response)
+	fmt.Scan(&response)
 
 	language, err := strconv.Atoi(response)
 
@@ -108,4 +108,8 @@ func HandleKeyboardSignals(keyboardSignalChannel chan os.Signal) {
 		}
 	}
 
+}
+
+func PrintInitialMessage() {
+	fmt.Println(translation.MenuTexts.GetValue(translation.WelcomeMessage))
 }
