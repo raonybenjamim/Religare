@@ -33,6 +33,8 @@ func main() {
 	helpers.PrintLicense()
 	config.AppLanguage = helpers.ChoseLanguage()
 
+	helpers.PrintInitialMessage()
+
 	generatorType := flag.String(
 		"generator-type",
 		models.GeneratorType.Wifi,
