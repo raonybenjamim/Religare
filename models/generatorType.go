@@ -8,8 +8,8 @@ import (
 type GeneratorType int
 
 const (
-	RandomGeneratorType GeneratorType = iota
-	WifiGeneratorType
+	WifiGeneratorType GeneratorType = iota
+	RandomGeneratorType
 	TextInputGeneratorType
 )
 
