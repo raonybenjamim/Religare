@@ -111,5 +111,31 @@ func HandleKeyboardSignals(keyboardSignalChannel chan os.Signal) {
 }
 
 func PrintInitialMessage() {
-	fmt.Println(translation.MenuTexts.GetValue(translation.WelcomeMessage))
+	fmt.Println(translation.MenuTexts.GetValue(translation.WelcomeMessageMenu))
+}
+
+func GetExecutionConfig() (models.GeneratorType, bool, error) {
+	var chosenGenerator string
+	var chosenBypass string
+
+	fmt.Println(translation.MenuTexts.GetValue(translation.SelectGeneratorMenu))
+	fmt.Scan(&chosenGenerator)
+
+	fmt.Println(translation.MenuTexts.GetValue(translation.BypassValidationMenu))
+	fmt.Scan(&chosenBypass)
+
+	generatorType, err := strconv.Atoi(chosenGenerator)
+
+	if err != nil {
+		return 0, false, err
+	}
+
+	shouldBypass, err := strconv.ParseBool(chosenBypass)
+
+	if err != nil {
+		return 0, false, err
+	}
+
+	return models.GeneratorType(generatorType), shouldBypass, nil
+
 }
