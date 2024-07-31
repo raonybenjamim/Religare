@@ -1,9 +1,7 @@
 package config
 
-import "religare/models"
+import (
+	"religare/customTypes"
+)
 
-var AppLanguage models.Language
-
-func init() {
-	AppLanguage = models.English
-}
+var AppLanguage customTypes.Language

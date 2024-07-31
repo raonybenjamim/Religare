@@ -10,8 +10,9 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"religare/customTypes"
 	"religare/models"
-	"religare/models/translation"
+	"religare/translation"
 	"strconv"
 	"strings"
 	"syscall"
@@ -49,7 +50,7 @@ func PrintLicense() {
 	fmt.Println("under certain conditions; Check https://www.gnu.org/licenses/ for details.")
 }
 
-func ChoseLanguage() models.Language {
+func ChoseLanguage() customTypes.Language {
 	var response string
 
 	fmt.Println("0 for Portuguese 1 for English")
@@ -61,7 +62,7 @@ func ChoseLanguage() models.Language {
 		panic(err)
 	}
 
-	return models.Language(language)
+	return customTypes.Language(language)
 }
 
 func GetDataFromChannel(channel <-chan models.Binary, quantity int) string {

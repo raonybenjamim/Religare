@@ -1,6 +1,6 @@
 package translation
 
-import "religare/models"
+import "religare/customTypes"
 
 const (
 	WelcomeMessageMenu TextIndex = iota
@@ -10,7 +10,7 @@ const (
 )
 
 var MenuTexts = LanguageMap{
-	models.English: Texts{
+	customTypes.English: Texts{
 		WelcomeMessageMenu: "Welcome to Religare! This application aims to allow communication " +
 			"with entities capable of manipulating the eletomagnectic spectrum. Once you've selected " +
 			"the correct generator and validation mode, continue your communication experiments as usual. " +
@@ -29,7 +29,7 @@ var MenuTexts = LanguageMap{
 			"message appears. \n" +
 			"To stop the application and return to the mode selection menu, press CTRL + C",
 	},
-	models.Portuguese: Texts{
+	customTypes.Portuguese: Texts{
 		WelcomeMessageMenu: "Bem-vindo ao Religare! Este aplicativo tem como objetivo permitir a comunicação " +
 			"com entidades capazes de manipular o espectro eletromagnético. Depois de selecionar " +
 			"o gerador correto e o modo de validação, continue seus experimentos de comunicação como de costume. " +
