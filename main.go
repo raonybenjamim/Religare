@@ -19,7 +19,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"religare/config"
 	"religare/converter"
@@ -35,39 +34,33 @@ func main() {
 
 	helpers.PrintInitialMessage()
 
-	generatorType := flag.String(
-		"generator-type",
-		models.GeneratorType.Wifi,
-		fmt.Sprintf("Define what will be the data generation behavior. Valid values are: %v", models.GeneratorType))
+	generatorType, validationBypass, err := helpers.GetExecutionConfig()
 
-	noValidation := flag.Bool(
-		"no-validation",
-		false,
-		"If 'no-valiation' is true, the application will simply show any data received on the screen without any validation")
-
-	flag.Parse()
+	if err != nil {
+		panic(err)
+	}
 
 	var signalGenerator converter.SignalGenerator
 	var channelInterpreter interpreter.ChannelInterpreter
 
-	switch *generatorType {
-	case models.GeneratorType.Random:
+	switch generatorType {
+	case models.RandomGeneratorType:
 		signalGenerator = converter.NewRandomSignalGenerator(models.ConverterChannelSize)
 
-	case models.GeneratorType.Wifi:
+	case models.WifiGeneratorType:
 		signalGenerator = converter.NewWifiSignalGenerator(models.ConverterChannelSize, models.WifiThreshold)
 
-	case models.GeneratorType.TextInput:
+	case models.TextInputGeneratorType:
 		signalGenerator = converter.NewTextInputSignalGenerator(models.ConverterChannelSize)
 
 	default:
-		panic(fmt.Sprintf("No generator type selected. Value was: %v", *generatorType))
+		panic(fmt.Sprintf("No generator type selected. Value was: %v", generatorType.String()))
 	}
 
 	// Generate Signal
 	go signalGenerator.GenerateSignal()
 
-	if *noValidation {
+	if validationBypass {
 		channelInterpreter = &interpreter.BinaryDataBypassReader{
 			Channel: signalGenerator.GetChannel(),
 		}

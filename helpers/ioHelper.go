@@ -131,12 +131,17 @@ func GetExecutionConfig() (models.GeneratorType, bool, error) {
 		return 0, false, err
 	}
 
-	shouldBypass, err := strconv.ParseBool(chosenBypass)
-
-	if err != nil {
-		return 0, false, err
-	}
+	shouldBypass := parseByass(chosenBypass)
 
 	return models.GeneratorType(generatorType), shouldBypass, nil
 
+}
+
+func parseByass(chosenBypass string) bool {
+	switch chosenBypass {
+	case "1":
+		return true
+	default:
+		return false
+	}
 }
