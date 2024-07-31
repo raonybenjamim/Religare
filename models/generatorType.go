@@ -2,7 +2,7 @@ package models
 
 import (
 	"errors"
-	"religare/models/translation"
+	"religare/translation"
 )
 
 type GeneratorType int
@@ -28,7 +28,7 @@ func (g GeneratorType) String() string {
 
 func (g GeneratorType) Validate() error {
 	if g > TextInputGeneratorType {
-		return errors.New(translation.ErrorTexts.GetValue(translation.WrongInputError) + string(g))
+		return errors.New(translation.ErrorTexts.GetValue(translation.WrongInputError) + g.String())
 	}
 	return nil
 }

@@ -1,6 +1,6 @@
 package translation
 
-import "religare/models"
+import "religare/customTypes"
 
 const (
 	ChannelClosedError TextIndex = iota
@@ -8,11 +8,11 @@ const (
 )
 
 var ErrorTexts = LanguageMap{
-	models.English: Texts{
+	customTypes.English: Texts{
 		ChannelClosedError: "Channel closed before enough data was provided",
 		WrongInputError:    "Wrong input received: ",
 	},
-	models.Portuguese: Texts{
+	customTypes.Portuguese: Texts{
 		ChannelClosedError: "Canal foi fechado antes de dados suficientes terem sido providos",
 		WrongInputError:    "Entrada inválida: ",
 	},
