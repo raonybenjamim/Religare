@@ -31,12 +31,7 @@ func (RandomSignalGenerator) generateBinary() models.Binary {
 
 func (rsg *RandomSignalGenerator) GenerateSignal() {
 	for {
-		select {
-		case rsg.channel <- rsg.generateBinary():
-
-		default:
-			return
-		}
+		rsg.channel <- rsg.generateBinary()
 	}
 }
 
