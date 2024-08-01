@@ -44,11 +44,7 @@ func (wsg *WifiSignalGenerator) GenerateSignal() {
 			return
 		}
 
-		select {
-		case wsg.channel <- binary:
-		default:
-			return
-		}
+		wsg.channel <- binary
 
 	}
 }
