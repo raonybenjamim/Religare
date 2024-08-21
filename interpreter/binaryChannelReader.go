@@ -28,7 +28,7 @@ func (reader *BinaryDataInterpreter) ReadChannel() {
 			continue
 		}
 
-		messaageHeaders, err := reader.readHeadersFromChannel()
+		messageHeaders, err := reader.readHeadersFromChannel()
 
 		if err != nil {
 			continue
@@ -37,16 +37,16 @@ func (reader *BinaryDataInterpreter) ReadChannel() {
 		// Read the "size" bits from the message and convert it to
 		// a text, image or audio
 
-		switch messaageHeaders.MessageType {
+		switch messageHeaders.MessageType {
 		case models.MessageType.Text:
-			textContent, err := reader.readTextMessageFromChannel(messaageHeaders)
+			textContent, err := reader.readTextMessageFromChannel(messageHeaders)
 
 			if err == nil {
 				println("Got message: " + textContent)
 			}
 
 		case models.MessageType.TextFile:
-			textContent, err := reader.readTextMessageFromChannel(messaageHeaders)
+			textContent, err := reader.readTextMessageFromChannel(messageHeaders)
 
 			if err == nil {
 				filename, err := helpers.WriteStringToFile(textContent)
