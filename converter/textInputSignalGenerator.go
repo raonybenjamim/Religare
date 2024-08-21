@@ -7,7 +7,7 @@
 package converter
 
 import (
-	"fmt"
+	"os"
 	"religare/helpers"
 	"religare/models"
 )
@@ -26,10 +26,12 @@ func NewTextInputSignalGenerator(bufferSize int) *TextInputSignalGenerator {
 
 func (tsg *TextInputSignalGenerator) GenerateSignal() {
 	for {
-		var message string
+		fileContent, err := os.ReadFile("./models/sampleTextContent")
+		if err != nil {
+			panic("fatal failure while reading the sample file: " + err.Error())
+		}
 
-		fmt.Println("Enter a message")
-		fmt.Scan(&message)
+		message := string(fileContent)
 
 		// Text input messages must include an indentification
 		message = "(This message if for TEST ONLY): " + message

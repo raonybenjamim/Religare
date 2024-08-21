@@ -1,0 +1,5 @@
+This is a simple test content and existis only for test purpuses.
+The content of this file being completely shown in the screen 
+indicates that Religare is working as expected for the text input
+functionality. Since this text should also support utf-8 characters
+ç # pontuantions $ and á accentuation should also be shown
