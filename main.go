@@ -19,25 +19,45 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"religare/config"
 	"religare/converter"
+	"religare/customTypes"
 	"religare/helpers"
 	"religare/interpreter"
 	"religare/models"
 )
 
+var debug bool
+
+func init() {
+	flag.BoolVar(&debug, "debug", false, "enable debug mode")
+}
+
 func main() {
 
-	helpers.PrintLicense()
-	config.AppLanguage = helpers.ChoseLanguage()
+	flag.Parse()
 
-	helpers.PrintInitialMessage()
+	var generatorType models.GeneratorType
+	var validationBypass bool
+	var err error
 
-	generatorType, validationBypass, err := helpers.GetExecutionConfig()
+	if !debug {
+		helpers.PrintLicense()
+		config.AppLanguage = helpers.ChoseLanguage()
 
-	if err != nil {
-		panic(err)
+		helpers.PrintInitialMessage()
+
+		generatorType, validationBypass, err = helpers.GetExecutionConfig()
+
+		if err != nil {
+			panic(err)
+		}
+	} else {
+		config.AppLanguage = customTypes.English
+		generatorType = models.TextInputGeneratorType
+		validationBypass = true
 	}
 
 	var signalGenerator converter.SignalGenerator
