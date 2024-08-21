@@ -75,27 +75,27 @@ func BinaryStringToBinaryData(value string) []models.Binary {
 }
 
 func BinaryStringToString(binaryString string) (string, error) {
-	var text string
 
 	if len(binaryString)%models.ByteSize != 0 {
 		return "", errors.New("binary string length is not a multiple of 8")
 	}
+
+	var bytes []byte
 
 	for i := 0; i < len(binaryString); i += models.ByteSize {
 		// Get the next 8 bits
 		byteString := binaryString[i : i+models.ByteSize]
 
 		// Convert the 8-bit binary string to a decimal (base 10) integer
-		charCode, err := strconv.ParseInt(byteString, 2, 64)
+		byteValue, err := strconv.ParseUint(byteString, 2, models.ByteSize)
 		if err != nil {
 			return "", err
 		}
 
-		// Convert the integer to a corresponding ASCII character
-		text += string(rune(charCode))
+		bytes = append(bytes, byte(byteValue))
 	}
 
-	return text, nil
+	return string(bytes), nil
 }
 
 func BinaryStringToHexString(binaryString string) (string, error) {
