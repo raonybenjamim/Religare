@@ -33,9 +33,6 @@ func (tsg *TextInputSignalGenerator) GenerateSignal() {
 
 		message := string(fileContent)
 
-		// Text input messages must include an indentification
-		message = "(This message if for TEST ONLY): " + message
-
 		checkSum := helpers.GetMd5HashFromString(message)
 
 		binaryChecksum, err := helpers.HexTo4BitBinary(checkSum)
@@ -44,13 +41,13 @@ func (tsg *TextInputSignalGenerator) GenerateSignal() {
 			panic("fatal failure while generating message md5")
 		}
 
+		messageBinary := helpers.StringToBinaryString(message, 8)
+
 		// create valid headers
 		headers := models.ValidStart +
 			models.MessageType.Text +
 			binaryChecksum +
-			helpers.IntToBinaryString(len(message), 10)
-
-		messageBinary := helpers.StringToBinaryString(message, 8)
+			helpers.IntToBinaryString(len(messageBinary), 10)
 
 		binaryData := helpers.BinaryStringToBinaryData(headers + messageBinary)
 
