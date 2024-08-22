@@ -41,13 +41,13 @@ func (tsg *TextInputSignalGenerator) GenerateSignal() {
 			panic("fatal failure while generating message md5")
 		}
 
-		messageBinary := helpers.StringToBinaryString(message, 8)
+		messageBinary := helpers.StringToBinaryString(message)
 
 		// create valid headers
 		headers := models.ValidStart +
 			models.MessageType.Text +
 			binaryChecksum +
-			helpers.IntToBinaryString(len(messageBinary), 10)
+			helpers.IntToBinaryString(len(messageBinary)/8, 10)
 
 		binaryData := helpers.BinaryStringToBinaryData(headers + messageBinary)
 
