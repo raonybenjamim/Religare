@@ -99,7 +99,8 @@ func (reader *BinaryDataInterpreter) isValidStringMessage(expectedBinaryChecksum
 }
 
 func (reader *BinaryDataInterpreter) readTextMessageFromChannel(headers models.MessageHeaders) (string, error) {
-	textContent, err := helpers.BinaryStringToString(helpers.GetDataFromChannel(reader.Channel, headers.MessageSizeBytes*models.ByteSize))
+	binaryData := helpers.GetDataFromChannel(reader.Channel, headers.MessageSizeBytes*models.ByteSize)
+	textContent, err := helpers.BinaryStringToString(binaryData)
 
 	if err != nil {
 		return "", fmt.Errorf("Error while reading binary data form channel: " + err.Error())
