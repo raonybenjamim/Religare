@@ -57,7 +57,7 @@ func main() {
 	} else {
 		config.AppLanguage = customTypes.English
 		generatorType = models.TextInputGeneratorType
-		validationBypass = true
+		validationBypass = false
 	}
 
 	var signalGenerator converter.SignalGenerator
