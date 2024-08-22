@@ -28,14 +28,21 @@ func IntToBinaryString(value int, zfill int) string {
 	return fmt.Sprintf("%0*s", zfill, strconv.FormatInt(int64(value), 2))
 }
 
-func StringToBinaryString(value string, zfill int) string {
+/*
+*
+In order to allow utf-8 support we need to work with 32 bits runes
+This function will encode the runes into bytes and then to binary string
+*
+*/
+func StringToBinaryString(value string) string {
 	var binaryString string
 
 	for _, char := range value {
-		binaryChar := strconv.FormatInt(int64(char), 2)
-		binaryChar = fmt.Sprintf("%0*s", zfill, binaryChar)
-
-		binaryString += binaryChar
+		//convert the rune to utf-8 bytes
+		bytes := []byte(string(char))
+		for _, utf8_byte := range bytes {
+			binaryString += fmt.Sprintf("%08b", utf8_byte)
+		}
 	}
 
 	return binaryString
