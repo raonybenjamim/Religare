@@ -35,7 +35,7 @@ The implementation of this protocol is for experimental purposes only. The proje
 ### Running modes: 
 - **wifi**: Reads binary data based on the oscilation of the WiFi signal strenght
 - **Random**: Reads randomly generated binary data based on an internal algorithm
-- **Text Input**: Simply replicates data from the console input (This is only for testing purposes)
+- **Text Input**: Simply replicates data from a file at [./models/sampleTextContent](./models/sampleTextContent) (This is only for testing purposes)
 
 ## How to run? 
 
@@ -45,34 +45,17 @@ This application **should** run propperly on Windows and Linux systems. You can 
 go run main.go
 ```
 
-That will start the application in the WiFi mode. If you want to run in a different mode, provide the `generator-type` parameter: 
+That will start the application and prompt you for the run configuration. Follow the on screen instructions to use the application.
 
-```
-go run main.go --generator-type=textInput
-go run main.go --generator-type=random
-go run main.go --generator-type=wifi
-```
-
-Also, you can run the application in **no validation** mode. In this mode, the application will not perform any validation to the received data. It will simply divide the received data into 8 bit words and show it to the screen. 
-
-> NOTE: This mode is intended to **TEST PURPOSES ONLY** and should not be used for Instrumental Trans Communication experiments as it would not provide validated messages according to the Religare protocol. 
-
-You can run the application in "no validation mode" by providing the `no-validation` flag:
-
-```
-go run main.go --generator-type=random --no-validation
-go run main.go --generator-type=wifi --no-validation
-```
+To stop the application, use the `ctrl + c` command.
 
 ### Using the binaries
 
 Each release also provide bundled binaries compatible with both windows and linux. You can use them instead of the `go run main.go` command. 
 
-For example, if you are on windows, download the correct binary and use it like this (the same flags and parameters are still applied):
+For example, if you are on windows, download the correct binary and click on it. 
 
-```
-.\Religare.exe --generator-type=<chose your generator>
-```
+> Note: Since we are not able to provide the correct certificates, the windows binaries may be stoped by windows security applications or your anti virus. If that happens, add the application to the exclusion list of our security applications or download the source code and run directly.
 
 ## Want to know more? 
 
