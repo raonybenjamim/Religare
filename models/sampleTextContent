@@ -1,5 +1,4 @@
-This is a simple test content and existis only for test purpuses.
-The content of this file being completely shown in the screen 
-indicates that Religare is working as expected for the text input
-functionality. Since this text should also support utf-8 characters
-ç # pontuantions $ and á accentuation should also be shown
+ó This is a simple message ò
+And serves only for testing purposes
+Also, this message should be showing 
+Utf-8 Cháráçtèrs with correct symbols
