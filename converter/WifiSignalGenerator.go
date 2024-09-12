@@ -9,6 +9,7 @@ package converter
 import (
 	"bytes"
 	"fmt"
+	"math"
 	"os/exec"
 	"regexp"
 	"religare/models"
@@ -117,7 +118,9 @@ func convertToBinary(threshold float64) (models.Binary, error) {
 		return 0, err
 	}
 
-	if strength > threshold {
+	moddedThreshold := math.Mod(strength, threshold) > (threshold / 2)
+
+	if moddedThreshold {
 		return models.One, nil
 	} else {
 		return models.Zero, nil
