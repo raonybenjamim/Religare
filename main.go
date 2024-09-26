@@ -39,7 +39,7 @@ func main() {
 
 	flag.Parse()
 
-	var generatorType models.GeneratorType
+	var generatorType customTypes.GeneratorType
 	var validationBypass bool
 	var err error
 
@@ -56,7 +56,7 @@ func main() {
 		}
 	} else {
 		config.AppLanguage = customTypes.English
-		generatorType = models.TextInputGeneratorType
+		generatorType = customTypes.TextInputGeneratorType
 		validationBypass = false
 	}
 
@@ -64,13 +64,13 @@ func main() {
 	var channelInterpreter interpreter.ChannelInterpreter
 
 	switch generatorType {
-	case models.RandomGeneratorType:
+	case customTypes.RandomGeneratorType:
 		signalGenerator = converter.NewRandomSignalGenerator(models.ConverterChannelSize)
 
-	case models.WifiGeneratorType:
+	case customTypes.WifiGeneratorType:
 		signalGenerator = converter.NewWifiSignalGenerator(models.ConverterChannelSize, models.WifiThreshold)
 
-	case models.TextInputGeneratorType:
+	case customTypes.TextInputGeneratorType:
 		signalGenerator = converter.NewTextInputSignalGenerator(models.ConverterChannelSize)
 
 	default:

@@ -115,7 +115,7 @@ func PrintInitialMessage() {
 	fmt.Println(translation.MenuTexts.GetValue(translation.WelcomeMessageMenu))
 }
 
-func GetExecutionConfig() (models.GeneratorType, bool, error) {
+func GetExecutionConfig() (customTypes.GeneratorType, bool, error) {
 	var chosenGenerator string
 	var chosenBypass string
 
@@ -133,7 +133,7 @@ func GetExecutionConfig() (models.GeneratorType, bool, error) {
 
 	shouldBypass := parseByass(chosenBypass)
 
-	return models.GeneratorType(generatorType), shouldBypass, nil
+	return customTypes.GeneratorType(generatorType), shouldBypass, nil
 
 }
 
