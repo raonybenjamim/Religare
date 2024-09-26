@@ -11,3 +11,4 @@ import (
 )
 
 var AppLanguage customTypes.Language
+var GeneratorType customTypes.GeneratorType
