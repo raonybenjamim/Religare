@@ -19,46 +19,51 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
+	"os"
 	"religare/config"
 	"religare/converter"
 	"religare/customTypes"
-	"religare/helpers"
 	"religare/interpreter"
 	"religare/models"
 )
 
-var debug bool
+var configFilePath string
 
 func init() {
-	flag.BoolVar(&debug, "debug", false, "enable debug mode")
+	flag.StringVar(
+		&configFilePath,
+		"config",
+		"./runConfigurations/randomNoValidation.json",
+		"provide a custom config file for starting the application")
 }
 
 func main() {
 
 	flag.Parse()
 
+	var executionConfig models.ExecutionConfig
 	var generatorType customTypes.GeneratorType
 	var validationBypass bool
 	var err error
 
-	if !debug {
-		helpers.PrintLicense()
-		config.AppLanguage = helpers.ChoseLanguage()
+	configContent, err := os.ReadFile(configFilePath)
 
-		helpers.PrintInitialMessage()
-
-		generatorType, validationBypass, err = helpers.GetExecutionConfig()
-
-		if err != nil {
-			panic(err)
-		}
-	} else {
-		config.AppLanguage = customTypes.English
-		generatorType = customTypes.TextInputGeneratorType
-		validationBypass = false
+	if err != nil {
+		panic(fmt.Sprintf("%s not found", configFilePath))
 	}
+
+	err = json.Unmarshal(configContent, &executionConfig)
+
+	if err != nil {
+		panic(err)
+	}
+
+	config.AppLanguage = executionConfig.ParseLanguage()
+	generatorType = executionConfig.ParseGeneratorType()
+	validationBypass = executionConfig.ValidationBypass
 
 	var signalGenerator converter.SignalGenerator
 	var channelInterpreter interpreter.ChannelInterpreter
