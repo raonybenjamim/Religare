@@ -64,6 +64,7 @@ func main() {
 	config.AppLanguage = executionConfig.ParseLanguage()
 	generatorType = executionConfig.ParseGeneratorType()
 	validationBypass = executionConfig.ValidationBypass
+	config.WebSocketConfig = &executionConfig.WebSocketConfig
 
 	var signalGenerator converter.SignalGenerator
 	var channelInterpreter interpreter.ChannelInterpreter
@@ -78,11 +79,21 @@ func main() {
 	case customTypes.TextInputGeneratorType:
 		signalGenerator = converter.NewTextInputSignalGenerator(models.ConverterChannelSize)
 
+	case customTypes.DataSenderGeneratorType:
+		signalGenerator = converter.NewDataSenderGenerator(models.ConverterChannelSize)
+
+	case customTypes.DataReceiverGeneratorType:
+		signalGenerator = converter.NewDataReceiverGenerator(models.ConverterChannelSize)
+
 	default:
 		panic(fmt.Sprintf("No generator type selected. Value was: %v", generatorType.String()))
 	}
 
 	// Generate Signal
+	if generatorType == customTypes.DataSenderGeneratorType {
+		signalGenerator.GenerateSignal()
+	}
+
 	go signalGenerator.GenerateSignal()
 
 	if validationBypass {
