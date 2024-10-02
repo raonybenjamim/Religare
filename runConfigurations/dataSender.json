@@ -1,0 +1,9 @@
+{
+    "language": "pt-br",
+    "generatorType": "dataSender",
+    "validationBypass": true,
+    "WebSocketConfig": {
+        "ip": "127.0.0.1",
+        "port": 8080
+    }
+}
