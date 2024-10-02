@@ -6,7 +6,7 @@
         "request": "launch",
         "mode": "auto",
         "program": "${workspaceFolder}",
-        "args": ["-debug"]
+        "args": ["-config", "./runConfigurations/randomNoValidation.json"]
     }
     ]
     
