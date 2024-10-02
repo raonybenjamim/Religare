@@ -12,9 +12,10 @@ import (
 )
 
 type ExecutionConfig struct {
-	Language         string `json:"language"`
-	GeneratorType    string `json:"generatorType"`
-	ValidationBypass bool   `json:"validationBypass"`
+	Language         string                              `json:"language"`
+	GeneratorType    string                              `json:"generatorType"`
+	ValidationBypass bool                                `json:"validationBypass"`
+	WebSocketConfig  customTypes.WebsocketConnectionInfo `json:"webSocketConfig"`
 }
 
 func (e *ExecutionConfig) ParseLanguage() customTypes.Language {
@@ -36,6 +37,10 @@ func (e *ExecutionConfig) ParseGeneratorType() customTypes.GeneratorType {
 		return customTypes.RandomGeneratorType
 	case "textinput":
 		return customTypes.TextInputGeneratorType
+	case "datasender":
+		return customTypes.DataSenderGeneratorType
+	case "datareceiver":
+		return customTypes.DataReceiverGeneratorType
 	default:
 		return customTypes.WifiGeneratorType
 	}
