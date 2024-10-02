@@ -32,6 +32,8 @@ const (
 	WifiGeneratorType GeneratorType = iota
 	RandomGeneratorType
 	TextInputGeneratorType
+	DataSenderGeneratorType
+	DataReceiverGeneratorType
 )
 
 func (g GeneratorType) String() string {
@@ -42,7 +44,16 @@ func (g GeneratorType) String() string {
 		return "wifi"
 	case TextInputGeneratorType:
 		return "textInput"
+	case DataSenderGeneratorType:
+		return "dataSender"
+	case DataReceiverGeneratorType:
+		return "dataReceiver"
 	default:
 		return "wifi"
 	}
+}
+
+type WebsocketConnectionInfo struct {
+	Ip   string `json:"ip"`
+	Port int    `json:"port"`
 }
