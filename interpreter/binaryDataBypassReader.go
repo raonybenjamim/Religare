@@ -26,7 +26,7 @@ func (reader *BinaryDataBypassReader) ReadChannel() {
 	defer ticker.Stop()
 
 	for range ticker.C {
-		binaryCharacter := helpers.GetDataFromChannel(reader.Channel, models.ByteSize)
+		binaryCharacter := helpers.GetDataFromChannel(reader.Channel, 4*models.ByteSize)
 
 		textCharacter, err := helpers.BinaryStringToString(binaryCharacter)
 
