@@ -27,7 +27,7 @@ func NewDataSenderGenerator(bufferSize int) *DataSenderGenerator {
 		panic("data sender was created but no websocket configuration was provided. Please refer to the user manual")
 	}
 
-	writeAddr := &net.UDPAddr{IP: net.ParseIP("127.0.0.1"), Port: 2918} // we don't need to care about this address
+	writeAddr := &net.UDPAddr{IP: net.ParseIP("0.0.0.0"), Port: 2918} // we don't need to care about this address
 	readAddr := &net.UDPAddr{IP: net.ParseIP(config.WebSocketConfig.Ip), Port: config.WebSocketConfig.Port}
 
 	conn, err := net.DialUDP("udp", writeAddr, readAddr)
@@ -53,7 +53,8 @@ func (dsg *DataSenderGenerator) GenerateSignal() {
 	go randomGenerator.GenerateSignal()
 	log.Printf("Starting data sender with the following config: %v \n", config.WebSocketConfig)
 
-	ticker := time.NewTicker(200 * time.Millisecond)
+	// 32 bits every 800 ms is (approximately) 1 character every 200 ms
+	ticker := time.NewTicker(800 * time.Millisecond)
 	defer ticker.Stop()
 	for range ticker.C {
 		// Read packages of 4 Bytes from the channel

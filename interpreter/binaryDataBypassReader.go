@@ -22,7 +22,7 @@ func (reader *BinaryDataBypassReader) GetChannel() <-chan models.Binary {
 }
 
 func (reader *BinaryDataBypassReader) ReadChannel() {
-	ticker := time.NewTicker(200 * time.Millisecond)
+	ticker := time.NewTicker(500 * time.Millisecond)
 	defer ticker.Stop()
 
 	for range ticker.C {
