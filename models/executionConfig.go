@@ -12,10 +12,11 @@ import (
 )
 
 type ExecutionConfig struct {
-	Language         string                              `json:"language"`
-	GeneratorType    string                              `json:"generatorType"`
-	ValidationBypass bool                                `json:"validationBypass"`
-	WebSocketConfig  customTypes.WebsocketConnectionInfo `json:"webSocketConfig"`
+	Language               string                              `json:"language"`
+	GeneratorType          string                              `json:"generatorType"`
+	ValidationBypass       bool                                `json:"validationBypass"`
+	WebSocketConfig        customTypes.WebsocketConnectionInfo `json:"webSocketConfig"`
+	ScreenExhibitionConfig customTypes.ScreenExhibitionConfig  `json:"screenExhibitionConfig"`
 }
 
 func (e *ExecutionConfig) ParseLanguage() customTypes.Language {

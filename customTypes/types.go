@@ -57,3 +57,7 @@ type WebsocketConnectionInfo struct {
 	Ip   string `json:"ip"`
 	Port int    `json:"port"`
 }
+
+type ScreenExhibitionConfig struct {
+	FilterUnderadable bool `json:"filterUnreadable"`
+}
