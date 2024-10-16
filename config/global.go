@@ -13,3 +13,4 @@ import (
 var AppLanguage customTypes.Language
 var GeneratorType customTypes.GeneratorType
 var WebSocketConfig *customTypes.WebsocketConnectionInfo
+var ScreenExhibitionConfig *customTypes.ScreenExhibitionConfig

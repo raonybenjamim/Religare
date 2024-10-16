@@ -1,5 +1,8 @@
 {
     "language": "pt-br",
     "generatorType": "random",
-    "validationBypass": true
+    "validationBypass": true,
+    "screenExhibitionConfig": {
+        "filterUnreadable": true
+    }
 }
