@@ -46,7 +46,7 @@ func (drg *DataReceiverGenerator) GenerateSignal() {
 	// Read the first 32 bits of data from the connection
 	readBuffer := make([]byte, 4*models.ByteSize)
 
-	log.Printf("Starting data sender with the following config: %v \n", config.WebSocketConfig)
+	log.Printf("Starting data receiver with the following config: %v \n", config.WebSocketConfig)
 	for {
 		n, _, err := drg.connection.ReadFromUDP(readBuffer)
 
