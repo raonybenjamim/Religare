@@ -8,9 +8,12 @@ package interpreter
 
 import (
 	"fmt"
+	"religare/config"
 	"religare/helpers"
 	"religare/models"
+	"strings"
 	"time"
+	"unicode"
 )
 
 type BinaryDataBypassReader struct {
@@ -33,6 +36,23 @@ func (reader *BinaryDataBypassReader) ReadChannel() {
 		if err != nil {
 			fmt.Println("error while reading binary data form channel: " + err.Error())
 		}
-		fmt.Print(textCharacter)
+		showCharacters(textCharacter)
 	}
+}
+
+func showCharacters(textCharacters string) {
+	if !config.ScreenExhibitionConfig.FilterUnderadable {
+		fmt.Print(textCharacters)
+		return
+	}
+
+	var sb strings.Builder
+
+	for _, char := range textCharacters {
+		if unicode.IsLetter(char) || unicode.IsNumber(char) {
+			sb.WriteRune(char)
+		}
+	}
+
+	fmt.Print(sb.String())
 }
