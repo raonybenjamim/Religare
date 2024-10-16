@@ -65,6 +65,7 @@ func main() {
 	generatorType = executionConfig.ParseGeneratorType()
 	validationBypass = executionConfig.ValidationBypass
 	config.WebSocketConfig = &executionConfig.WebSocketConfig
+	config.ScreenExhibitionConfig = &executionConfig.ScreenExhibitionConfig
 
 	var signalGenerator converter.SignalGenerator
 	var channelInterpreter interpreter.ChannelInterpreter
