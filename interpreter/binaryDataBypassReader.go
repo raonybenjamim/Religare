@@ -11,9 +11,7 @@ import (
 	"religare/config"
 	"religare/helpers"
 	"religare/models"
-	"strings"
 	"time"
-	"unicode"
 )
 
 type BinaryDataBypassReader struct {
@@ -29,7 +27,7 @@ func (reader *BinaryDataBypassReader) ReadChannel() {
 	defer ticker.Stop()
 
 	for range ticker.C {
-		binaryCharacter := helpers.GetDataFromChannel(reader.Channel, 4*models.ByteSize)
+		binaryCharacter := helpers.GetDataFromBinaryChannel(reader.Channel, 4*models.ByteSize)
 
 		textCharacter, err := helpers.BinaryStringToString(binaryCharacter)
 
@@ -46,13 +44,5 @@ func showCharacters(textCharacters string) {
 		return
 	}
 
-	var sb strings.Builder
-
-	for _, char := range textCharacters {
-		if unicode.IsLetter(char) || unicode.IsNumber(char) {
-			sb.WriteRune(char)
-		}
-	}
-
-	fmt.Print(sb.String())
+	fmt.Print(helpers.FilterUnderadableCharacters(textCharacters))
 }

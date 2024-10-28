@@ -68,7 +68,7 @@ func ChoseLanguage() customTypes.Language {
 	return customTypes.Language(language)
 }
 
-func GetDataFromChannel(channel <-chan models.Binary, quantity int) string {
+func GetDataFromBinaryChannel(channel <-chan models.Binary, quantity int) string {
 	var builder strings.Builder
 
 	for i := 0; i < quantity; i++ {
