@@ -175,7 +175,13 @@ func WriteReportFile(reportLines []customTypes.ReportLine) error {
 	}
 	// Write data to file
 
-	file, err := os.Create(config.CalibrationConfig.ReportOutputPath)
+	reportFiePath := config.CalibrationConfig.ReportOutputPath
+
+	if reportFiePath == "" {
+		return fmt.Errorf("Trying to write report file but not report file configuration was provided")
+	}
+
+	file, err := os.Create(reportFiePath)
 	if err != nil {
 		return err
 	}
@@ -187,4 +193,19 @@ func WriteReportFile(reportLines []customTypes.ReportLine) error {
 	csvWritter.WriteAll(dataToWrite)
 
 	return nil
+}
+
+func ReadCalibrationFile() (calibrationData string, err error) {
+	configFilePath := config.CalibrationConfig.CalibrationFileLocation
+
+	if configFilePath == "" {
+		return "", fmt.Errorf("please provide a calibration file path in the execution config")
+	}
+
+	file, err := os.ReadFile(configFilePath)
+	if err != nil {
+		return "", err
+	}
+
+	return string(file), nil
 }
