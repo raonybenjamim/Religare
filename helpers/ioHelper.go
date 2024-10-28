@@ -7,9 +7,11 @@
 package helpers
 
 import (
+	"encoding/csv"
 	"fmt"
 	"os"
 	"os/signal"
+	"religare/config"
 	"religare/customTypes"
 	"religare/models"
 	"religare/translation"
@@ -17,6 +19,7 @@ import (
 	"strings"
 	"syscall"
 	"time"
+	"unicode"
 
 	"github.com/google/uuid"
 )
@@ -144,4 +147,44 @@ func parseByass(chosenBypass string) bool {
 	default:
 		return false
 	}
+}
+
+func FilterUnderadableCharacters(content string) string {
+	var sb strings.Builder
+
+	for _, char := range content {
+		if unicode.IsLetter(char) || unicode.IsNumber(char) {
+			sb.WriteRune(char)
+		}
+	}
+
+	return sb.String()
+}
+
+func WriteReportFile(reportLines []customTypes.ReportLine) error {
+	// Prepare the data to be written
+	dataToWrite := [][]string{
+		{"character", "isvalid", "attempts"},
+	}
+
+	for _, line := range reportLines {
+		dataToWrite = append(dataToWrite, []string{
+			line.Character,
+			strconv.FormatBool(line.IsValid),
+			strconv.Itoa(line.Attempts)})
+	}
+	// Write data to file
+
+	file, err := os.Create(config.CalibrationConfig.ReportOutputPath)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	csvWritter := csv.NewWriter(file)
+	defer csvWritter.Flush()
+
+	csvWritter.WriteAll(dataToWrite)
+
+	return nil
 }
