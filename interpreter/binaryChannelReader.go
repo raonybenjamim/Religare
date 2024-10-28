@@ -24,7 +24,7 @@ func (reader *BinaryDataInterpreter) ReadChannel() {
 	// go helpers.HealthcheckPrint("Reading messages")
 
 	for {
-		if !(helpers.GetDataFromChannel(reader.Channel, models.ValidStartBits) == models.ValidStart) {
+		if !(helpers.GetDataFromBinaryChannel(reader.Channel, models.ValidStartBits) == models.ValidStart) {
 			continue
 		}
 
@@ -63,16 +63,16 @@ func (reader *BinaryDataInterpreter) ReadChannel() {
 }
 
 func (reader *BinaryDataInterpreter) readHeadersFromChannel() (models.MessageHeaders, error) {
-	messageType := helpers.GetDataFromChannel(reader.Channel, models.MessageTypeBits)
+	messageType := helpers.GetDataFromBinaryChannel(reader.Channel, models.MessageTypeBits)
 
 	// Only accept valid message types
 	if !helpers.IsValidMessageHeader(messageType) {
 		return models.MessageHeaders{}, fmt.Errorf("wrong message type received: %v", messageType)
 	}
 
-	checksumData := helpers.GetDataFromChannel(reader.Channel, models.ChecksumBits)
+	checksumData := helpers.GetDataFromBinaryChannel(reader.Channel, models.ChecksumBits)
 
-	messageSize, err := helpers.ConvertBinaryToInt(helpers.GetDataFromChannel(reader.Channel, models.MessageSizeBits))
+	messageSize, err := helpers.ConvertBinaryToInt(helpers.GetDataFromBinaryChannel(reader.Channel, models.MessageSizeBits))
 
 	if err != nil {
 		return models.MessageHeaders{}, err
@@ -99,7 +99,7 @@ func (reader *BinaryDataInterpreter) isValidStringMessage(expectedBinaryChecksum
 }
 
 func (reader *BinaryDataInterpreter) readTextMessageFromChannel(headers models.MessageHeaders) (string, error) {
-	binaryData := helpers.GetDataFromChannel(reader.Channel, headers.MessageSizeBytes*models.ByteSize)
+	binaryData := helpers.GetDataFromBinaryChannel(reader.Channel, headers.MessageSizeBytes*models.ByteSize)
 	textContent, err := helpers.BinaryStringToString(binaryData)
 
 	if err != nil {
