@@ -17,6 +17,7 @@ type ExecutionConfig struct {
 	ValidationBypass       bool                                `json:"validationBypass"`
 	WebSocketConfig        customTypes.WebsocketConnectionInfo `json:"webSocketConfig"`
 	ScreenExhibitionConfig customTypes.ScreenExhibitionConfig  `json:"screenExhibitionConfig"`
+	CalibrationConfig      customTypes.CalibrationConfig       `json:"calibrationConfig"`
 }
 
 func (e *ExecutionConfig) ParseLanguage() customTypes.Language {
