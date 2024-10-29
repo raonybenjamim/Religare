@@ -53,8 +53,8 @@ func (dsg *DataSenderGenerator) GenerateSignal() {
 	go randomGenerator.GenerateSignal()
 	log.Printf("Starting data sender with the following config: %v \n", config.WebSocketConfig)
 
-	// 32 bits every 800 ms is (approximately) 1 character every 200 ms
-	ticker := time.NewTicker(800 * time.Millisecond)
+	// 32 bits every 100 ms
+	ticker := time.NewTicker(100 * time.Millisecond)
 	defer ticker.Stop()
 	for range ticker.C {
 		// Read packages of 4 Bytes from the channel
