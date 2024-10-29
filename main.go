@@ -66,6 +66,7 @@ func main() {
 	validationBypass = executionConfig.ValidationBypass
 	config.WebSocketConfig = &executionConfig.WebSocketConfig
 	config.ScreenExhibitionConfig = &executionConfig.ScreenExhibitionConfig
+	config.CalibrationConfig = &executionConfig.CalibrationConfig
 
 	var signalGenerator converter.SignalGenerator
 	var channelInterpreter interpreter.ChannelInterpreter
@@ -107,5 +108,15 @@ func main() {
 		}
 	}
 
-	channelInterpreter.ReadChannel()
+	if config.CalibrationConfig != nil {
+		channelCalibrator := &interpreter.Calibrator{
+			Channel:            signalGenerator.GetChannel(),
+			CalibrationChannel: make(chan string, models.ConverterChannelSize),
+		}
+
+		go channelCalibrator.ReadChannel()
+		channelCalibrator.Calibrate()
+	} else {
+		channelInterpreter.ReadChannel()
+	}
 }

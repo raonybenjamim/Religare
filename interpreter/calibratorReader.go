@@ -8,7 +8,6 @@ package interpreter
 
 import (
 	"fmt"
-	"os"
 	"religare/config"
 	"religare/customTypes"
 	"religare/helpers"
@@ -82,6 +81,8 @@ func (calibrator *Calibrator) Calibrate() {
 			}
 		}
 	}
-	helpers.WriteReportFile(reportData)
-	os.Exit(0)
+	err = helpers.WriteReportFile(reportData)
+	if err != nil {
+		panic(err)
+	}
 }
