@@ -36,10 +36,10 @@ func (calibrator *Calibrator) ReadChannel() {
 			fmt.Println("error while reading binary data form channel: " + err.Error())
 		}
 
-		filteredData := helpers.FilterUnderadableCharacters(textCharacter)
+		// filteredData := helpers.FilterUnderadableCharacters(textCharacter)
 
-		if filteredData != "" {
-			for _, char := range filteredData {
+		if textCharacter != "" {
+			for _, char := range textCharacter {
 				calibrator.CalibrationChannel <- string(char)
 			}
 		}
