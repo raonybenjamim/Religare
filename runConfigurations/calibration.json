@@ -1,0 +1,13 @@
+{
+    "language": "pt-br",
+    "generatorType": "random",
+    "validationBypass": true,
+    "screenExhibitionConfig": {
+        "filterUnreadable": true
+    },
+    "calibrationConfig" : {
+        "calibrationFileLocation": "./calibrationData.txt",
+        "evaluationThreshold": 30,
+        "reportOutputPath": "./calibrationResult.csv"
+    }
+}
