@@ -39,7 +39,9 @@ func (calibrator *Calibrator) ReadChannel() {
 		filteredData := helpers.FilterUnderadableCharacters(textCharacter)
 
 		if filteredData != "" {
-			calibrator.CalibrationChannel <- filteredData
+			for _, char := range filteredData {
+				calibrator.CalibrationChannel <- string(char)
+			}
 		}
 	}
 }
@@ -58,26 +60,27 @@ func (calibrator *Calibrator) Calibrate() {
 	reportData := []customTypes.ReportLine{}
 	// for each character, read characters until threshold
 	for _, char := range dataToCalibrate {
-		for i := 0; i < evaluationThreshold; i++ {
+		expected := string(char)
+		for i := 0; i <= evaluationThreshold; i++ {
 			receivedData, ok := <-calibrator.CalibrationChannel
 			if !ok {
 				panic("error reading calibration channel")
 			}
-			if strings.EqualFold(string(char), receivedData) {
+			if strings.EqualFold(expected, receivedData) {
 				reportData = append(reportData, customTypes.ReportLine{
 					Character: receivedData,
 					IsValid:   true,
 					Attempts:  i,
 				})
 				i = evaluationThreshold
-			}
-
-			if i == evaluationThreshold {
-				reportData = append(reportData, customTypes.ReportLine{
-					Character: string(char),
-					IsValid:   false,
-					Attempts:  evaluationThreshold,
-				})
+			} else {
+				if i == evaluationThreshold {
+					reportData = append(reportData, customTypes.ReportLine{
+						Character: expected,
+						IsValid:   false,
+						Attempts:  evaluationThreshold,
+					})
+				}
 			}
 		}
 	}
