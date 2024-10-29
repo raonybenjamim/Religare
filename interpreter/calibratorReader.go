@@ -72,8 +72,8 @@ func (calibrator *Calibrator) Calibrate() {
 					IsValid:   true,
 					Attempts:  i,
 				})
-				i = evaluationThreshold
 				fmt.Printf("Target: %s OK Attempts: %d \n", receivedData, i)
+				i = evaluationThreshold
 			} else {
 				if i == evaluationThreshold {
 					reportData = append(reportData, customTypes.ReportLine{

@@ -1,0 +1,17 @@
+{
+    "language": "pt-br",
+    "generatorType": "dataReceiver",
+    "validationBypass": true,
+    "WebSocketConfig": {
+        "ip": "0.0.0.0",
+        "port": 8080
+    },
+    "screenExhibitionConfig": {
+        "filterUnreadable": true
+    },
+    "calibrationConfig" : {
+        "calibrationFileLocation": "./calibrationData.txt",
+        "evaluationThreshold": 30,
+        "reportOutputPath": "./calibrationResult.csv"
+    }
+}
