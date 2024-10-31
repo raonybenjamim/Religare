@@ -66,7 +66,7 @@ func main() {
 	validationBypass = executionConfig.ValidationBypass
 	config.WebSocketConfig = &executionConfig.WebSocketConfig
 	config.ScreenExhibitionConfig = &executionConfig.ScreenExhibitionConfig
-	config.CalibrationConfig = &executionConfig.CalibrationConfig
+	config.CalibrationConfig = executionConfig.CalibrationConfig
 
 	var signalGenerator converter.SignalGenerator
 	var channelInterpreter interpreter.ChannelInterpreter
