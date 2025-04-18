@@ -4,9 +4,9 @@
     "validationBypass": true,
     "WebSocketConfig": {
         "ip": "0.0.0.0",
-        "port": 8080
+        "port": 8919
     },
     "screenExhibitionConfig": {
-        "filterUnreadable": true
+        "filterUnreadable": false
     }
 }
