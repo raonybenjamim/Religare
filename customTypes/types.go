@@ -32,8 +32,8 @@ const (
 	WifiGeneratorType GeneratorType = iota
 	RandomGeneratorType
 	TextInputGeneratorType
-	DataSenderGeneratorType
 	DataReceiverGeneratorType
+	ConstantSignalGeneratorType
 )
 
 func (g GeneratorType) String() string {
@@ -44,12 +44,30 @@ func (g GeneratorType) String() string {
 		return "wifi"
 	case TextInputGeneratorType:
 		return "textInput"
-	case DataSenderGeneratorType:
-		return "dataSender"
 	case DataReceiverGeneratorType:
 		return "dataReceiver"
+	case ConstantSignalGeneratorType:
+		return "constantSignal"
 	default:
 		return "wifi"
+	}
+}
+
+type RunMode int
+
+const (
+	SenderMode = iota
+	ReceiverMode
+)
+
+func (r RunMode) String() string {
+	switch r {
+	case SenderMode:
+		return "senderMode"
+	case ReceiverMode:
+		return "receiverMode"
+	default:
+		return "unknown"
 	}
 }
 

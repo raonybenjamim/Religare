@@ -18,6 +18,7 @@ type ExecutionConfig struct {
 	WebSocketConfig        customTypes.WebsocketConnectionInfo `json:"webSocketConfig"`
 	ScreenExhibitionConfig customTypes.ScreenExhibitionConfig  `json:"screenExhibitionConfig"`
 	CalibrationConfig      *customTypes.CalibrationConfig      `json:"calibrationConfig,omitempty"`
+	RunMode                string                              `json:"runMode"`
 }
 
 func (e *ExecutionConfig) ParseLanguage() customTypes.Language {
@@ -39,11 +40,22 @@ func (e *ExecutionConfig) ParseGeneratorType() customTypes.GeneratorType {
 		return customTypes.RandomGeneratorType
 	case "textinput":
 		return customTypes.TextInputGeneratorType
-	case "datasender":
-		return customTypes.DataSenderGeneratorType
 	case "datareceiver":
 		return customTypes.DataReceiverGeneratorType
+	case "constantsignal":
+		return customTypes.ConstantSignalGeneratorType
 	default:
 		return customTypes.WifiGeneratorType
+	}
+}
+
+func (e *ExecutionConfig) ParseRunMode() customTypes.RunMode {
+	switch strings.ToLower(e.RunMode) {
+	case "sendermode":
+		return customTypes.SenderMode
+	case "receivermode":
+		return customTypes.ReceiverMode
+	default:
+		return customTypes.ReceiverMode
 	}
 }
