@@ -16,12 +16,13 @@ import (
 )
 
 type DataSenderGenerator struct {
-	channel    chan models.Binary
-	BufferSize int
-	connection *net.UDPConn
+	channel           chan models.Binary
+	internalGenerator SignalGenerator
+	BufferSize        int
+	connection        *net.UDPConn
 }
 
-func NewDataSenderGenerator(bufferSize int) *DataSenderGenerator {
+func NewDataSenderGenerator(bufferSize int, generator SignalGenerator) *DataSenderGenerator {
 	// evaluate global config for websocket communication
 	if config.WebSocketConfig == nil {
 		panic("data sender was created but no websocket configuration was provided. Please refer to the user manual")
@@ -37,20 +38,16 @@ func NewDataSenderGenerator(bufferSize int) *DataSenderGenerator {
 	}
 
 	return &DataSenderGenerator{
-		channel:    make(chan models.Binary, bufferSize),
-		BufferSize: bufferSize,
-		connection: conn,
+		channel:           generator.GetChannel(),
+		internalGenerator: generator,
+		BufferSize:        bufferSize,
+		connection:        conn,
 	}
 }
 
 func (dsg *DataSenderGenerator) GenerateSignal() {
-	randomGenerator := RandomSignalGenerator{
-		channel:    dsg.channel,
-		BufferSize: dsg.BufferSize,
-	}
-
 	// Generate signal to the channel (Start go routine for random generator)
-	go randomGenerator.GenerateSignal()
+	go dsg.internalGenerator.GenerateSignal()
 	log.Printf("Starting data sender with the following config: %v \n", config.WebSocketConfig)
 
 	// 32 bits every 100 ms
