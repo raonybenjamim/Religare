@@ -42,7 +42,7 @@ The implementation of this protocol is for experimental purposes only. The proje
 This application **should** run propperly on Windows and Linux systems. You can run the application with: 
 
 ```
-go run main.go -config runConfigurtions/desiredConfig.json
+go run main.go -config runConfigurations/desiredConfig.json
 ```
 
 That will start the application and prompt you for the run configuration. Follow the on screen instructions to use the application.
