@@ -11,6 +11,7 @@ import (
 	"religare/config"
 	"religare/helpers"
 	"religare/models"
+	"strings"
 	"time"
 )
 
@@ -29,12 +30,22 @@ func (reader *BinaryDataBypassReader) ReadChannel() {
 	for range ticker.C {
 		binaryCharacter := helpers.GetDataFromBinaryChannel(reader.Channel, 4*models.ByteSize)
 
-		textCharacter, err := helpers.BinaryStringToString(binaryCharacter)
+		if config.ScreenExhibitionConfig.ConstantReceiver {
+			checkForZeros(binaryCharacter)
+		} else {
+			textCharacter, err := helpers.BinaryStringToString(binaryCharacter)
 
-		if err != nil {
-			fmt.Println("error while reading binary data form channel: " + err.Error())
+			if err != nil {
+				fmt.Println("error while reading binary data form channel: " + err.Error())
+			}
+			showCharacters(textCharacter)
 		}
-		showCharacters(textCharacter)
+	}
+}
+
+func checkForZeros(binaryCharacter string) {
+	if strings.Contains(binaryCharacter, "0") {
+		fmt.Println("===0===")
 	}
 }
 
