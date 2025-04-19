@@ -78,4 +78,5 @@ type WebsocketConnectionInfo struct {
 
 type ScreenExhibitionConfig struct {
 	FilterUnderadable bool `json:"filterUnreadable"`
+	ConstantReceiver  bool `json:"constantReceiver"` // only shows on screen when receives zeros
 }
