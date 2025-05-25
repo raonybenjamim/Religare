@@ -5,6 +5,7 @@
     "validationBypass": true,
     "WebSocketConfig": {
         "ip": "0.0.0.0",
-        "port": 8919
+        "port": 8919,
+        "messageSize": 1
     }
 }

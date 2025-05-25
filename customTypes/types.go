@@ -72,8 +72,9 @@ func (r RunMode) String() string {
 }
 
 type WebsocketConnectionInfo struct {
-	Ip   string `json:"ip"`
-	Port int    `json:"port"`
+	Ip          string `json:"ip"`
+	Port        int    `json:"port"`
+	MessageSize int    `json:"messageSize"`
 }
 
 type ScreenExhibitionConfig struct {
