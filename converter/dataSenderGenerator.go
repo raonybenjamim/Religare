@@ -50,12 +50,16 @@ func (dsg *DataSenderGenerator) GenerateSignal() {
 	go dsg.internalGenerator.GenerateSignal()
 	log.Printf("Starting data sender with the following config: %v \n", config.WebSocketConfig)
 
-	// 32 bits every 100 ms
+	// Send data every 100 ms
 	ticker := time.NewTicker(100 * time.Millisecond)
 	defer ticker.Stop()
 	for range ticker.C {
+		bytesQuantity := 4
+		if _, ok := dsg.internalGenerator.(*ConstantSignalGenerator); ok {
+			bytesQuantity = 1
+		}
 		// Read packages of 4 Bytes from the channel
-		bytesToSend := readBytes(dsg.channel, 4)
+		bytesToSend := readBytes(dsg.channel, bytesQuantity)
 		// Send data to the websocket connection
 		_, err := dsg.connection.Write(bytesToSend)
 
