@@ -52,7 +52,11 @@ func (reader *BinaryDataBypassReader) ReadChannel() {
 	}(sigs, config.ScreenExhibitionConfig)
 
 	for range ticker.C {
-		binaryCharacter := helpers.GetDataFromBinaryChannel(reader.Channel, 4*models.ByteSize)
+		bytesQuantity := 4 * models.ByteSize
+		if config.ScreenExhibitionConfig.ConstantReceiver {
+			bytesQuantity = 1
+		}
+		binaryCharacter := helpers.GetDataFromBinaryChannel(reader.Channel, bytesQuantity)
 
 		if config.ScreenExhibitionConfig.ConstantReceiver {
 			checkForZeros(binaryCharacter, &statistics)
