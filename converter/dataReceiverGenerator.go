@@ -23,11 +23,11 @@ type DataReceiverGenerator struct {
 
 func NewDataReceiverGenerator(bufferSize int) *DataReceiverGenerator {
 	// evaluate global config for websocket communication
-	if config.WebSocketConfig == nil {
+	if config.WebSocketConnection == nil {
 		panic("data sender was created but no websocket configuration was provided. Please refer to the user manual")
 	}
 
-	address := &net.UDPAddr{IP: net.ParseIP(config.WebSocketConfig.Ip), Port: config.WebSocketConfig.Port}
+	address := &net.UDPAddr{IP: net.ParseIP(config.WebSocketConnection.Ip), Port: config.WebSocketConnection.Port}
 
 	udpConnection, err := net.ListenUDP("udp", address)
 
@@ -44,11 +44,11 @@ func NewDataReceiverGenerator(bufferSize int) *DataReceiverGenerator {
 
 func (drg *DataReceiverGenerator) GenerateSignal() {
 
-	receiveQuantity := config.WebSocketConfig.MessageSize
+	receiveQuantity := config.WebSocketConnection.MessageSize
 
 	readBuffer := make([]byte, receiveQuantity)
 
-	log.Printf("Starting data receiver with the following config: %v \n", config.WebSocketConfig)
+	log.Printf("Starting data receiver with the following config: %v \n", config.WebSocketConnection)
 	for {
 		n, _, err := drg.connection.ReadFromUDP(readBuffer)
 

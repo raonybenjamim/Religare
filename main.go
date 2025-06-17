@@ -24,9 +24,6 @@ import (
 	"fmt"
 	"os"
 	"religare/config"
-	"religare/converter"
-	"religare/customTypes"
-	"religare/interpreter"
 	"religare/models"
 )
 
@@ -44,10 +41,23 @@ func main() {
 
 	flag.Parse()
 
+	parseConfig(configFilePath)
+
+	switch config.RunMode {
+	case config.SenderMode:
+		// Execute Send Data Function
+		sendData()
+	case config.ReceiverMode:
+		// Execute Receive Data Function
+		receiveData()
+	case config.ExecuteLocalMode:
+		executeLocal()
+	}
+}
+
+func parseConfig(configFilePath string) {
+
 	var executionConfig models.ExecutionConfig
-	var generatorType customTypes.GeneratorType
-	var validationBypass bool
-	var err error
 
 	configContent, err := os.ReadFile(configFilePath)
 
@@ -58,67 +68,26 @@ func main() {
 	err = json.Unmarshal(configContent, &executionConfig)
 
 	if err != nil {
-		panic(err)
+		panic(fmt.Sprintf("Error while parsing config: %v", err))
 	}
 
 	config.AppLanguage = executionConfig.ParseLanguage()
-	generatorType = executionConfig.ParseGeneratorType()
-	runMode := executionConfig.ParseRunMode()
-	validationBypass = executionConfig.ValidationBypass
-	config.WebSocketConfig = &executionConfig.WebSocketConfig
-	config.ScreenExhibitionConfig = &executionConfig.ScreenExhibitionConfig
-	config.CalibrationConfig = executionConfig.CalibrationConfig
+	config.Calibration = executionConfig.CalibrationConfig
+	config.WebSocketConnection = executionConfig.WebSocketConnectionConfig
+	config.RunMode = executionConfig.RunMode
+}
 
-	var signalGenerator converter.SignalGenerator
-	var channelInterpreter interpreter.ChannelInterpreter
+func sendData() {
+	// Load the data producer
+	// Check if it is a constant data sender
+	// Start the producer
+}
 
-	switch generatorType {
-	case customTypes.RandomGeneratorType:
-		signalGenerator = converter.NewRandomSignalGenerator(models.ConverterChannelSize)
+func receiveData() {
+	// Load the data receiver
+	// Check the type of bypass
+}
 
-	case customTypes.WifiGeneratorType:
-		signalGenerator = converter.NewWifiSignalGenerator(models.ConverterChannelSize, models.WifiThreshold)
-
-	case customTypes.TextInputGeneratorType:
-		signalGenerator = converter.NewTextInputSignalGenerator(models.ConverterChannelSize)
-
-	case customTypes.DataReceiverGeneratorType:
-		signalGenerator = converter.NewDataReceiverGenerator(models.ConverterChannelSize)
-
-	case customTypes.ConstantSignalGeneratorType:
-		signalGenerator = converter.NewConstantSignalGenerator(models.ConverterChannelSize)
-
-	default:
-		panic(fmt.Sprintf("No generator type selected. Value was: %v", generatorType.String()))
-	}
-
-	// Generate Signal
-	if runMode == customTypes.SenderMode {
-		signalSender := converter.NewDataSenderGenerator(models.ConverterChannelSize, signalGenerator)
-		signalSender.GenerateSignal()
-	}
-
-	go signalGenerator.GenerateSignal()
-
-	if validationBypass {
-		channelInterpreter = &interpreter.BinaryDataBypassReader{
-			Channel: signalGenerator.GetChannel(),
-		}
-	} else {
-		channelInterpreter = &interpreter.BinaryDataInterpreter{
-			Channel: signalGenerator.GetChannel(),
-		}
-	}
-
-	if config.CalibrationConfig != nil {
-		channelCalibrator := &interpreter.Calibrator{
-			Channel:            signalGenerator.GetChannel(),
-			CalibrationChannel: make(chan string, models.ConverterChannelSize),
-		}
-
-		go channelCalibrator.ReadChannel()
-		channelCalibrator.Calibrate()
-	} else {
-		channelInterpreter.ReadChannel()
-	}
+func executeLocal() {
+	// This mode both produce and consumes data with local channels
 }

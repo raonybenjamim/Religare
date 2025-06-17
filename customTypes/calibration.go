@@ -11,9 +11,3 @@ type ReportLine struct {
 	IsValid   bool
 	Attempts  int
 }
-
-type CalibrationConfig struct {
-	CalibrationFileLocation string `json:"calibrationFileLocation"`
-	EvaluationThreshold     int    `json:"evaluationThreshold"`
-	ReportOutputPath        string `json:"reportOutputPath"`
-}

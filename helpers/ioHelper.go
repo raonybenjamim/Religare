@@ -175,7 +175,7 @@ func WriteReportFile(reportLines []customTypes.ReportLine) error {
 	}
 	// Write data to file
 
-	reportFiePath := config.CalibrationConfig.ReportOutputPath
+	reportFiePath := config.Calibration.ReportOutputPath
 
 	if reportFiePath == "" {
 		return fmt.Errorf("Trying to write report file but not report file configuration was provided")
@@ -196,7 +196,7 @@ func WriteReportFile(reportLines []customTypes.ReportLine) error {
 }
 
 func ReadCalibrationFile() (calibrationData string, err error) {
-	configFilePath := config.CalibrationConfig.CalibrationFileLocation
+	configFilePath := config.Calibration.CalibrationFileLocation
 
 	if configFilePath == "" {
 		return "", fmt.Errorf("please provide a calibration file path in the execution config")

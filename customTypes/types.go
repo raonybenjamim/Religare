@@ -52,32 +52,3 @@ func (g GeneratorType) String() string {
 		return "wifi"
 	}
 }
-
-type RunMode int
-
-const (
-	SenderMode = iota
-	ReceiverMode
-)
-
-func (r RunMode) String() string {
-	switch r {
-	case SenderMode:
-		return "senderMode"
-	case ReceiverMode:
-		return "receiverMode"
-	default:
-		return "unknown"
-	}
-}
-
-type WebsocketConnectionInfo struct {
-	Ip          string `json:"ip"`
-	Port        int    `json:"port"`
-	MessageSize int    `json:"messageSize"`
-}
-
-type ScreenExhibitionConfig struct {
-	FilterUnderadable bool `json:"filterUnreadable"`
-	ConstantReceiver  bool `json:"constantReceiver"` // only shows on screen when receives zeros
-}

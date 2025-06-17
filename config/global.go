@@ -11,7 +11,10 @@ import (
 )
 
 var AppLanguage customTypes.Language
+var RunMode RunModeConfig
 var GeneratorType customTypes.GeneratorType
-var WebSocketConfig *customTypes.WebsocketConnectionInfo
-var ScreenExhibitionConfig *customTypes.ScreenExhibitionConfig
-var CalibrationConfig *customTypes.CalibrationConfig
+var WebSocketConnection *WebsocketConnectionConfig
+var ScreenExhibition *ScreenExhibitionConfig
+var Calibration *CalibrationConfig
+var DataRead *DataReadConfig
+var DataProduce *DataProduceConfig

@@ -36,7 +36,7 @@ func (calibrator *Calibrator) ReadChannel() {
 			fmt.Println("error while reading binary data form channel: " + err.Error())
 		}
 
-		if config.ScreenExhibitionConfig.FilterUnderadable {
+		if config.ScreenExhibition.FilterUnderadable {
 			textCharacter = helpers.FilterUnderadableCharacters(textCharacter)
 		}
 		if textCharacter != "" {
@@ -53,7 +53,7 @@ func (calibrator *Calibrator) Calibrate() {
 		panic(err)
 	}
 
-	evaluationThreshold := config.CalibrationConfig.EvaluationThreshold
+	evaluationThreshold := config.Calibration.EvaluationThreshold
 	if evaluationThreshold == 0 {
 		panic("cannot work with Evaluation Threshold zero. Please configure it in the config file")
 	}

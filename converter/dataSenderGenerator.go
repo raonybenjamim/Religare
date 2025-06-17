@@ -24,12 +24,12 @@ type DataSenderGenerator struct {
 
 func NewDataSenderGenerator(bufferSize int, generator SignalGenerator) *DataSenderGenerator {
 	// evaluate global config for websocket communication
-	if config.WebSocketConfig == nil {
+	if config.WebSocketConnection == nil {
 		panic("data sender was created but no websocket configuration was provided. Please refer to the user manual")
 	}
 
 	writeAddr := &net.UDPAddr{IP: net.ParseIP("0.0.0.0"), Port: 2918} // we don't need to care about this address
-	readAddr := &net.UDPAddr{IP: net.ParseIP(config.WebSocketConfig.Ip), Port: config.WebSocketConfig.Port}
+	readAddr := &net.UDPAddr{IP: net.ParseIP(config.WebSocketConnection.Ip), Port: config.WebSocketConnection.Port}
 
 	conn, err := net.DialUDP("udp", writeAddr, readAddr)
 
@@ -48,13 +48,13 @@ func NewDataSenderGenerator(bufferSize int, generator SignalGenerator) *DataSend
 func (dsg *DataSenderGenerator) GenerateSignal() {
 	// Generate signal to the channel (Start go routine for random generator)
 	go dsg.internalGenerator.GenerateSignal()
-	log.Printf("Starting data sender with the following config: %v \n", config.WebSocketConfig)
+	log.Printf("Starting data sender with the following config: %v \n", config.WebSocketConnection)
 
 	// Send data every 100 ms
 	ticker := time.NewTicker(100 * time.Millisecond)
 	defer ticker.Stop()
 
-	bytesQuantity := config.WebSocketConfig.MessageSize
+	bytesQuantity := config.WebSocketConnection.MessageSize
 	for range ticker.C {
 
 		bytesToSend := readBytes(dsg.channel, bytesQuantity)

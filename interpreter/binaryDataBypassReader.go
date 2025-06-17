@@ -12,7 +12,6 @@ import (
 	"os"
 	"os/signal"
 	"religare/config"
-	"religare/customTypes"
 	"religare/helpers"
 	"religare/models"
 	"strings"
@@ -42,23 +41,23 @@ func (reader *BinaryDataBypassReader) ReadChannel() {
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
 
-	go func(sig chan os.Signal, screenExhibitionConfig *customTypes.ScreenExhibitionConfig) {
+	go func(sig chan os.Signal, screenExhibitionConfig *config.ScreenExhibitionConfig) {
 		<-sig
 		if screenExhibitionConfig.ConstantReceiver {
 			fmt.Println("received signal, writing statistics to file")
 			writeStatisticsToFile(&statistics)
 		}
 		os.Exit(0)
-	}(sigs, config.ScreenExhibitionConfig)
+	}(sigs, config.ScreenExhibition)
 
 	for range ticker.C {
 		bytesQuantity := 4 * models.ByteSize
-		if config.ScreenExhibitionConfig.ConstantReceiver {
+		if config.ScreenExhibition.ConstantReceiver {
 			bytesQuantity = 1
 		}
 		binaryCharacter := helpers.GetDataFromBinaryChannel(reader.Channel, bytesQuantity)
 
-		if config.ScreenExhibitionConfig.ConstantReceiver {
+		if config.ScreenExhibition.ConstantReceiver {
 			checkForZeros(binaryCharacter, &statistics)
 		} else {
 			textCharacter, err := helpers.BinaryStringToString(binaryCharacter)
@@ -91,7 +90,7 @@ func checkForZeros(binaryCharacter string, statistics *ConstantReceiverStatistic
 }
 
 func showCharacters(textCharacters string) {
-	if !config.ScreenExhibitionConfig.FilterUnderadable {
+	if !config.ScreenExhibition.FilterUnderadable {
 		fmt.Print(textCharacters)
 		return
 	}

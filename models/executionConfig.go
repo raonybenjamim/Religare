@@ -7,18 +7,19 @@
 package models
 
 import (
+	"religare/config"
 	"religare/customTypes"
 	"strings"
 )
 
 type ExecutionConfig struct {
-	Language               string                              `json:"language"`
-	GeneratorType          string                              `json:"generatorType"`
-	ValidationBypass       bool                                `json:"validationBypass"`
-	WebSocketConfig        customTypes.WebsocketConnectionInfo `json:"webSocketConfig"`
-	ScreenExhibitionConfig customTypes.ScreenExhibitionConfig  `json:"screenExhibitionConfig"`
-	CalibrationConfig      *customTypes.CalibrationConfig      `json:"calibrationConfig,omitempty"`
-	RunMode                string                              `json:"runMode"`
+	Language                  string                            `json:"language"`
+	GeneratorType             string                            `json:"generatorType"`
+	ValidationBypass          bool                              `json:"validationBypass"`
+	WebSocketConnectionConfig *config.WebsocketConnectionConfig `json:"webSocketConnectionConfig"`
+	ScreenExhibitionConfig    *config.ScreenExhibitionConfig    `json:"screenExhibitionConfig"`
+	CalibrationConfig         *config.CalibrationConfig         `json:"calibrationConfig,omitempty"`
+	RunMode                   config.RunModeConfig              `json:"runMode"`
 }
 
 func (e *ExecutionConfig) ParseLanguage() customTypes.Language {
@@ -46,16 +47,5 @@ func (e *ExecutionConfig) ParseGeneratorType() customTypes.GeneratorType {
 		return customTypes.ConstantSignalGeneratorType
 	default:
 		return customTypes.WifiGeneratorType
-	}
-}
-
-func (e *ExecutionConfig) ParseRunMode() customTypes.RunMode {
-	switch strings.ToLower(e.RunMode) {
-	case "sendermode":
-		return customTypes.SenderMode
-	case "receivermode":
-		return customTypes.ReceiverMode
-	default:
-		return customTypes.ReceiverMode
 	}
 }
