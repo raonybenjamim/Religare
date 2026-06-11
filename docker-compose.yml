@@ -6,63 +6,21 @@ x-religare-service: &religare-service
   working_dir: /app
 
 services:
-  random-no-validation:
+  religare-random-no-validation:
     <<: *religare-service
     profiles: [random-no-validation]
     command: ["-config", "/app/runConfigurations/randomNoValidation.json"]
 
-  random-with-validation:
+  religare-random-with-validation:
     <<: *religare-service
     profiles: [random-with-validation]
     command: ["-config", "/app/runConfigurations/randomWithValidation.json"]
 
-  wifi-with-validation:
+  religare-wifi-with-validation:
     <<: *religare-service
     profiles: [wifi-with-validation]
     network_mode: host
     command: ["-config", "/app/runConfigurations/wifiWithValidation.json"]
-
-  calibration:
-    <<: *religare-service
-    profiles: [calibration]
-    command: ["-config", "/app/runConfigurations/calibration.docker.json"]
-    volumes:
-      - religare-calibration:/app/calibration
-
-  data-receiver:
-    <<: *religare-service
-    profiles: [udp-link]
-    command: ["-config", "/app/runConfigurations/dataReceiver.json"]
-    ports:
-      - "8919:8919/udp"
-    networks:
-      religare-net:
-        ipv4_address: 172.28.0.10
-
-  data-sender:
-    <<: *religare-service
-    profiles: [udp-link]
-    command: ["-config", "/app/runConfigurations/dataSender.docker.json"]
-    depends_on:
-      - data-receiver
-    networks:
-      religare-net:
-        ipv4_address: 172.28.0.11
-
-  receive-and-calibrate:
-    <<: *religare-service
-    profiles: [receive-and-calibrate]
-    command: ["-config", "/app/runConfigurations/receiveAndCalibrate.docker.json"]
-    ports:
-      - "8080:8080/udp"
-    volumes:
-      - religare-calibration:/app/calibration
-
-  religare:
-    <<: *religare-service
-    profiles: [custom]
-    environment:
-      RELIGARE_CONFIG: ${RELIGARE_CONFIG:-randomNoValidation.json}
 
 networks:
   religare-net:
@@ -71,5 +29,3 @@ networks:
       config:
         - subnet: 172.28.0.0/24
 
-volumes:
-  religare-calibration:
