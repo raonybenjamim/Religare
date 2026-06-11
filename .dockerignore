@@ -1,0 +1,7 @@
+.git
+.github
+.vscode
+*.md
+LICENSE
+CHANGELOG.md
+**/*_test.go
