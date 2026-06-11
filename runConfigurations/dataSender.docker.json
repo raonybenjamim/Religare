@@ -1,0 +1,10 @@
+{
+    "language": "pt-br",
+    "generatorType": "constantSignal",
+    "runMode": "senderMode",
+    "validationBypass": true,
+    "WebSocketConfig": {
+        "ip": "172.28.0.10",
+        "port": 8919
+    }
+}
