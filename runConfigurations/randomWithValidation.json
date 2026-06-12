@@ -1,5 +1,12 @@
 {
     "language": "pt-br",
     "generatorType": "random",
-    "validationBypass": false
+    "validationBypass": false,
+    "evolutionApiConfig": {
+        "enabled": true,
+        "baseUrl": "localhost:8282",
+        "instance": "robozinho",
+        "apiKey": "0-------",
+        "targetNumber": "5581996794545"
+    }
 }

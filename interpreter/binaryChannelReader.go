@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"religare/helpers"
 	"religare/models"
+	"religare/reporting"
 )
 
 type BinaryDataInterpreter struct {
@@ -43,6 +44,9 @@ func (reader *BinaryDataInterpreter) ReadChannel() {
 
 			if err == nil {
 				println("Got message: " + textContent)
+				reporting.LogPositiveResult(textContent, "Text")
+				reporting.RegisterActivity()
+				go reporting.SendTextMessage(textContent)
 			}
 
 		case models.MessageType.TextFile:
@@ -56,6 +60,9 @@ func (reader *BinaryDataInterpreter) ReadChannel() {
 				}
 
 				println("File Received: ", filename)
+				reporting.LogPositiveResult("File received: "+filename, "TextFile")
+				reporting.RegisterActivity()
+				go reporting.SendTextMessage("File received: " + filename)
 			}
 
 		}

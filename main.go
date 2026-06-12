@@ -28,6 +28,7 @@ import (
 	"religare/customTypes"
 	"religare/interpreter"
 	"religare/models"
+	"religare/reporting"
 )
 
 var configFilePath string
@@ -68,6 +69,9 @@ func main() {
 	config.WebSocketConfig = &executionConfig.WebSocketConfig
 	config.ScreenExhibitionConfig = &executionConfig.ScreenExhibitionConfig
 	config.CalibrationConfig = executionConfig.CalibrationConfig
+	config.EvolutionAPIConfig = executionConfig.EvolutionAPIConfig
+
+	reporting.StartDailyHeartbeat(executionConfig.RunMode)
 
 	var signalGenerator converter.SignalGenerator
 	var channelInterpreter interpreter.ChannelInterpreter
