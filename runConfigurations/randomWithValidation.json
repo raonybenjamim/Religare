@@ -4,9 +4,9 @@
     "validationBypass": false,
     "evolutionApiConfig": {
         "enabled": true,
-        "baseUrl": "localhost:8282",
+        "baseUrl": "http://localhost:8082",
         "instance": "robozinho",
-        "apiKey": "0-------",
-        "targetNumber": "5581996794545"
+        "apiKey": "---",
+        "targetNumber": "---"
     }
 }

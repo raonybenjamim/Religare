@@ -45,6 +45,8 @@ func main() {
 
 	flag.Parse()
 
+	fmt.Println("[INFO] Application starting...")
+
 	var executionConfig models.ExecutionConfig
 	var generatorType customTypes.GeneratorType
 	var validationBypass bool
@@ -70,6 +72,17 @@ func main() {
 	config.ScreenExhibitionConfig = &executionConfig.ScreenExhibitionConfig
 	config.CalibrationConfig = executionConfig.CalibrationConfig
 	config.EvolutionAPIConfig = executionConfig.EvolutionAPIConfig
+
+	fmt.Printf("[INFO] Configuration loaded from %s\n", configFilePath)
+	fmt.Printf("[INFO] Run Mode: %s\n", runMode)
+	fmt.Printf("[INFO] Generator Type: %s\n", generatorType.String())
+	
+	if config.EvolutionAPIConfig != nil && config.EvolutionAPIConfig.Enabled {
+		fmt.Println("[INFO] Evolution API is enabled. Target Number:", config.EvolutionAPIConfig.TargetNumber)
+		go reporting.SendTextMessage(fmt.Sprintf("Aplicação Religare iniciada no modo: %s", runMode))
+	} else {
+		fmt.Println("[INFO] Evolution API is disabled.")
+	}
 
 	reporting.StartDailyHeartbeat(executionConfig.RunMode)
 
