@@ -15,3 +15,4 @@ var GeneratorType customTypes.GeneratorType
 var WebSocketConfig *customTypes.WebsocketConnectionInfo
 var ScreenExhibitionConfig *customTypes.ScreenExhibitionConfig
 var CalibrationConfig *customTypes.CalibrationConfig
+var EvolutionAPIConfig *customTypes.EvolutionAPIConfig

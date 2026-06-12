@@ -19,6 +19,7 @@ type ExecutionConfig struct {
 	ScreenExhibitionConfig customTypes.ScreenExhibitionConfig  `json:"screenExhibitionConfig"`
 	CalibrationConfig      *customTypes.CalibrationConfig      `json:"calibrationConfig,omitempty"`
 	RunMode                string                              `json:"runMode"`
+	EvolutionAPIConfig     *customTypes.EvolutionAPIConfig     `json:"evolutionApiConfig,omitempty"`
 }
 
 func (e *ExecutionConfig) ParseLanguage() customTypes.Language {
