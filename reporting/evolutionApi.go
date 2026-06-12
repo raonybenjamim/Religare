@@ -29,17 +29,16 @@ func RegisterActivity() {
 // SendTextMessage sends a message through the Evolution API.
 func SendTextMessage(text string) error {
 	if config.EvolutionAPIConfig == nil || !config.EvolutionAPIConfig.Enabled {
+		fmt.Println("[INFO] Evolution API disabled. Message not sent.")
 		return nil
 	}
-
+	fmt.Println("[INFO] Evolution API enabled. Sending message...")
 	cfg := config.EvolutionAPIConfig
 
 	payload := customTypes.SendTextPayload{
 		Number:           cfg.TargetNumber,
 		Text:             text,
-		Delay:            1000,
-		LinkPreview:      true,
-		MentionsEveryOne: false,
+		Delay:            100,
 	}
 
 	payloadBytes, err := json.Marshal(payload)
@@ -48,25 +47,32 @@ func SendTextMessage(text string) error {
 	}
 
 	url := fmt.Sprintf("%s/message/sendText/%s", cfg.BaseURL, cfg.Instance)
+	fmt.Println("[INFO] Evolution API URL:", url)
+	fmt.Println("[INFO] Evolution API Payload:", string(payloadBytes))
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(payloadBytes))
 	if err != nil {
 		return fmt.Errorf("failed to create request: %v", err)
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("apikey", cfg.APIKey)
+	req.Header["apikey"] = []string{cfg.APIKey}
 
+	fmt.Println("[INFO] Evolution API Request:", req)
 	client := &http.Client{Timeout: 10 * time.Second}
 	resp, err := client.Do(req)
 	if err != nil {
+		fmt.Printf("[ERROR] Evolution API Request failed: %v\n", err)
 		return fmt.Errorf("failed to send message via evolution API: %v", err)
 	}
 	defer resp.Body.Close()
 
+	fmt.Println("[INFO] Evolution API Response:", resp)
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		fmt.Printf("[ERROR] Evolution API returned status code: %d\n", resp.StatusCode)
 		return fmt.Errorf("evolution API returned status code: %d", resp.StatusCode)
 	}
 
+	fmt.Println("[INFO] Evolution API message sent successfully.")
 	return nil
 }
 
